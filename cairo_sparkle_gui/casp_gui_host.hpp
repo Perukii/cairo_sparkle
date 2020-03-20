@@ -1,35 +1,47 @@
 
-void casp_gui_main(cairo_t * );
+void casp_gui_main(casp_surface * );
+void casp_gui_key (uint );
 
 static gboolean
 keyEvent(GtkWidget * _widget, GdkEventKey * _event, gpointer _user_data){
      //std::cout<<event->keyval<<std::endl;
+     casp_gui_key(_event->keyval);
      return true;
 }
 
 static gboolean
 drawEvent(GtkWidget * _widget, cairo_t * _cr, gpointer _data){
-     casp_gui_main(_cr);
+     casp_surface * _surface = (casp_surface * )_data;
+     _surface->cr=_cr;
+     casp_gui_main(_surface);
      return true;
 }
 
+static gboolean
+loopEvent(GtkWidget * widget){
+     gtk_widget_queue_draw(widget);
+     return true;
+}
 
 class casp_gui_host{
 
 private:
      GtkWidget * window;
      GtkWidget * canvas;
+
 public :
-     int w = 100, h = 100;
+     casp_surface surface;
 
      void window_scale(int _w=-1, int _h=-1){
-          if(_w!=-1) w = _w;
-          if(_h!=-1) h = _h;
-          gtk_window_set_default_size((GtkWindow *)window, w, h);
+          
+          if(_w!=-1) surface.resolution.x = _w;
+          if(_h!=-1) surface.resolution.y = _h;
+          gtk_window_set_default_size((GtkWindow *)window, surface.resolution.x, surface.resolution.y);
+
      }
 
      casp_gui_host(){
-
+          
           // ~~~ definition ~~~
 
           window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -41,8 +53,10 @@ public :
           // ~~~ signals ~~~
           
           g_signal_connect(window, "key-press-event"    , G_CALLBACK(keyEvent) , NULL);
-          g_signal_connect(canvas, "draw"               , G_CALLBACK(drawEvent), NULL);
+          g_signal_connect(canvas, "draw"               , G_CALLBACK(drawEvent), &surface);
           g_signal_connect(window, "destroy",G_CALLBACK(gtk_main_quit),NULL);
+
+          g_timeout_add(1, (GSourceFunc)loopEvent, canvas);
           
           // ~~~ CSS setting ~~~
           

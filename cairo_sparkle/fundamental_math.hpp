@@ -29,7 +29,7 @@ public:
 
 template<class MAIN>
 class casp_xywh{
-
+public:
      MAIN x, y, w, h;
 
      casp_xywh(MAIN _x = 0, MAIN _y = 0, MAIN _w = 0, MAIN _h = 0){
@@ -55,7 +55,7 @@ class casp_rgb{
 public:
      double r, g, b, a;
 
-     casp_rgb(double _r = 0, double _g = 0, double _b = 0, double _a = 0){
+     casp_rgb(double _r = 0, double _g = 0, double _b = 0, double _a = 1){
           r=_r; g=_g; b=_b; a=_a;
      }
 
