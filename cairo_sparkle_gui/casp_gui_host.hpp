@@ -1,24 +1,39 @@
 
-void casp_gui_main(casp_surface * );
-void casp_gui_key (uint );
+void casp_gui_main();
 
-static gboolean
-keyEvent(GtkWidget * _widget, GdkEventKey * _event, gpointer _user_data){
-     //std::cout<<event->keyval<<std::endl;
-     casp_gui_key(_event->keyval);
-     return true;
+void casp_gui_init(int _argc, char ** _argv){
+     gtk_init(&_argc, &_argv);
 }
 
+
 static gboolean
-drawEvent(GtkWidget * _widget, cairo_t * _cr, gpointer _data){
+key_press_event(GtkWidget * _widget, GdkEventKey * _event, gpointer _data){
      casp_surface * _surface = (casp_surface * )_data;
-     _surface->cr=_cr;
-     casp_gui_main(_surface);
+     //_surface -> key = _event->keyval;
+     _surface -> keys.insert(_event->keyval);
+
      return true;
 }
 
 static gboolean
-loopEvent(GtkWidget * widget){
+key_release_event(GtkWidget * _widget, GdkEventKey * _event, gpointer _data){
+     casp_surface * _surface = (casp_surface * )_data;
+     //_surface -> key = _event->keyval;
+     _surface -> keys.erase(_event->keyval);
+     return true;
+}
+
+static gboolean
+draw_event(GtkWidget * _widget, cairo_t * _cr, gpointer _data){
+     casp_surface * _surface = (casp_surface * )_data;
+     _surface -> cr = _cr;
+     casp_gui_main();
+     return true;
+}
+
+static gboolean
+loop_event(GtkWidget * widget){
+     
      gtk_widget_queue_draw(widget);
      return true;
 }
@@ -40,7 +55,7 @@ public :
 
      }
 
-     casp_gui_host(){
+     void setup(int _w=-1, int _h=-1){
           
           // ~~~ definition ~~~
 
@@ -52,11 +67,12 @@ public :
 
           // ~~~ signals ~~~
           
-          g_signal_connect(window, "key-press-event"    , G_CALLBACK(keyEvent) , NULL);
-          g_signal_connect(canvas, "draw"               , G_CALLBACK(drawEvent), &surface);
-          g_signal_connect(window, "destroy",G_CALLBACK(gtk_main_quit),NULL);
+          g_signal_connect(window, "key-press-event",     G_CALLBACK(key_press_event),     &surface);
+          g_signal_connect(window, "key-release-event",   G_CALLBACK(key_release_event),   &surface);
+          g_signal_connect(canvas, "draw",                G_CALLBACK(draw_event),          &surface);
+          g_signal_connect(window, "destroy",             G_CALLBACK(gtk_main_quit),       NULL);
 
-          g_timeout_add(1, (GSourceFunc)loopEvent, canvas);
+          g_timeout_add(1, (GSourceFunc)loop_event, canvas);
           
           // ~~~ CSS setting ~~~
           
@@ -69,7 +85,7 @@ public :
           gtk_style_context_add_provider_for_screen (screen,GTK_STYLE_PROVIDER(provider),GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
           gsize bytes_written, bytes_read;
-          const gchar * home = "/home/tada/Documents/Codes/CASP/cairo_sparkle/cairo_sparkle_gui/casp_gui_style.css";
+          const gchar * home = "cairo_sparkle_gui/casp_gui_style.css";
           GError * error = 0;
 
           gtk_css_provider_load_from_path (provider,g_filename_to_utf8(home, strlen(home), &bytes_read, &bytes_written, &error),NULL);
@@ -78,10 +94,12 @@ public :
           // ---
 
           gtk_container_add(GTK_CONTAINER(window), canvas);
+
+          window_scale(_w,_h);
      }
 
      void run(){
-          window_scale();
+          
           gtk_widget_show_all(window);
           gtk_main();
      }

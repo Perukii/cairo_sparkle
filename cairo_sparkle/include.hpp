@@ -1,6 +1,8 @@
 
 #include <gtk/gtk.h>
 
+#include <set>
+
 #include "fundamental_math.hpp"
 
 #include "objects/object.hpp"

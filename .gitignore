@@ -1,8 +1,8 @@
 
 test
+test.cpp
 
 .vscode
 .git
 
-*.cpp
 *.sh
