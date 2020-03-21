@@ -23,4 +23,10 @@ public:
           result.h = _obj.h       *resolution.x/range*zoom;
           return result;
      }
+
+     double make_w(double _tar){
+          double result;
+          result = _tar*resolution.x/range*zoom;
+          return result;
+     }
 };

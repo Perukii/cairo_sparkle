@@ -1,10 +1,10 @@
 
+
 void casp_gui_main();
 
 void casp_gui_init(int _argc, char ** _argv){
      gtk_init(&_argc, &_argv);
 }
-
 
 static gboolean
 key_press_event(GtkWidget * _widget, GdkEventKey * _event, gpointer _data){
