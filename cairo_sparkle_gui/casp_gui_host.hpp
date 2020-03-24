@@ -32,6 +32,13 @@ draw_event(GtkWidget * _widget, cairo_t * _cr, gpointer _data){
 }
 
 static gboolean
+window_state_event(GtkWidget * _widget, GdkEventWindowState * _event, gpointer _data){
+     std::cout<<"s"<<std::endl;
+     return true;
+}
+
+
+static gboolean
 loop_event(GtkWidget * widget){
      
      gtk_widget_queue_draw(widget);
@@ -70,6 +77,8 @@ public :
           g_signal_connect(window, "key-press-event",     G_CALLBACK(key_press_event),     &surface);
           g_signal_connect(window, "key-release-event",   G_CALLBACK(key_release_event),   &surface);
           g_signal_connect(canvas, "draw",                G_CALLBACK(draw_event),          &surface);
+          g_signal_connect(canvas, "window_state_event",  G_CALLBACK(window_state_event),   &surface);
+          //window_state_event
           g_signal_connect(window, "destroy",             G_CALLBACK(gtk_main_quit),       NULL);
 
           g_timeout_add(1, (GSourceFunc)loop_event, canvas);
