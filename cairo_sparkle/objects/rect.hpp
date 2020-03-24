@@ -4,34 +4,34 @@
 class casp_rect : public casp_object{
 
 public:
-     
-     casp_xy  <double> pivot;
-     casp_rgb color_rect;
+     casp_rect * target = NULL;
      
      // stroke
-     bool stroke=false;
-     double stroke_w=0, d_stroke_w;
-     casp_rgb color_stroke=casp_rgb_null;
+     bool stroke = false;
+     double stroke_w = 0, d_stroke_w;
+     casp_rgb color_stroke = casp_rgb_null;
 
      casp_rect(double _x=0, double _y=0, double _w=0, double _h=0,
-                    casp_rgb _color_rect=casp_rgb_null,
+                    casp_rgb _color=casp_rgb_null,
                     double _pivx=0.5, double _pivy=0.5){
-          setup_rect(_x, _y, _w, _h, _color_rect, _pivx, _pivy);
+          setup_rect(_x, _y, _w, _h, _color, _pivx, _pivy);
      }
 
+
      void setup_rect(double _x=0, double _y=0, double _w=0, double _h=0,
-                    casp_rgb _color_rect=casp_rgb_null,
+                    casp_rgb _color=casp_rgb_null,
                     double _pivx=0.5, double _pivy=0.5){
           xywh.x=_x;
           xywh.y=_y;
           xywh.w=_w;
           xywh.h=_h;
-          color_rect =_color_rect;
+          color =_color;
 
           pivot.x=_pivx;
           pivot.y=_pivy;
           setup_surface();
      }
+
 
      void setup_stroke(bool _stroke, double _stroke_w, casp_rgb _color_stroke=casp_rgb_null){
           stroke      =_stroke;
@@ -41,8 +41,8 @@ public:
 
 
      void draw_rect(bool strokein = false){
-          casp_rgb color = strokein ? color_stroke:color_rect;
-          cairo_set_source_rgba(surface->cr, color.r, color.g, color.b, color.a);
+          casp_rgb d_color = strokein ? color_stroke:color;
+          cairo_set_source_rgba(surface->cr, d_color.r, d_color.g, d_color.b, d_color.a);
 
           if(make_allowed()) d_xywh = surface->make_xywh(xywh);
           
@@ -61,4 +61,6 @@ public:
           d_set = true;
           
      }
+
+
 };

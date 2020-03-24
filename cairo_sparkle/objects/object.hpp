@@ -2,7 +2,10 @@
 casp_surface * casp_default_surface_target = NULL;
 
 class casp_object{
+
 public:
+     casp_xy  <double> pivot;
+     casp_rgb color;
      casp_xywh<double> xywh;
 
 protected:
@@ -28,15 +31,9 @@ protected:
      bool make_allowed(){
           return !(locked and d_set);
      }
-      
-/*
-protected:
-     void make_xywh(){
-          if(!locked or d_set){
-               d_xywh = surface->make(xywh);
-          }
-     }
-*/
+
+public:
+     
 };
 
 void casp_default_surface(casp_surface * _surface){

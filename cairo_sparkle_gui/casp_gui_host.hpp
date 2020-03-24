@@ -112,4 +112,29 @@ public :
           gtk_widget_show_all(window);
           gtk_main();
      }
+
+     void debug_QWEASD(){
+          for(auto key:surface.keys){
+               switch(key){
+                    case 113: // q
+                         surface.zoom/=1.05;
+                         break;
+                    case 119: // w
+                         surface.xy.y-=0.1;
+                         break;
+                    case 101: // e
+                         surface.zoom*=1.05;
+                         break;
+                    case 97 : // a
+                         surface.xy.x-=0.1;
+                         break;
+                    case 115: // s
+                         surface.xy.y+=0.1;
+                         break;
+                    case 100: // d
+                         surface.xy.x+=0.1;
+                         break;
+               }
+          }
+     }
 };
