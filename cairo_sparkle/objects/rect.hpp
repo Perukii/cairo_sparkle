@@ -1,11 +1,8 @@
 
-
-
 class casp_rect : public casp_object{
 
 public:
-     casp_rect * target = NULL;
-     
+
      // stroke
      bool stroke = false;
      double stroke_w = 0, d_stroke_w;
