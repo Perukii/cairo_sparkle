@@ -27,15 +27,15 @@ static gboolean
 draw_event(GtkWidget * _widget, cairo_t * _cr, gpointer _data){
      casp_surface * _surface = (casp_surface * )_data;
      _surface -> cr = _cr;
+     cairo_set_source_rgba(_surface->cr, 1.0, 1.0, 1.0, 1.0);
+     cairo_rectangle(_surface->cr, 0, 0, _surface->resolution.x, _surface->resolution.y);
+     cairo_fill(_surface->cr);
      casp_gui_main();
      return true;
 }
 
 static gboolean
-window_state_event(GtkWidget * _widget, GdkEventWindowState * _event, gpointer _data){
-     std::cout<<"s"<<std::endl;
-     return true;
-}
+window_resize_event(GtkWidget * _widget, GdkRectangle * _allocation, gpointer _data);
 
 
 static gboolean
@@ -53,13 +53,19 @@ private:
 
 public :
      casp_surface surface;
+     casp_xy<double> resolution_ratio={1.4,1};
 
      void window_scale(int _w=-1, int _h=-1){
+          casp_xy<double> _resolution = surface.resolution;
           
-          if(_w!=-1) surface.resolution.x = _w;
-          if(_h!=-1) surface.resolution.y = _h;
+          if(_w!=-1) _resolution.x = _w;
+          if(_h!=-1) _resolution.y = _h;
+          surface.resolution.y =
+               std::min (_resolution.x/resolution_ratio.x*resolution_ratio.y,_resolution.y);
+          surface.resolution.x =
+               std::min (_resolution.x,_resolution.y/resolution_ratio.y*resolution_ratio.x);
           gtk_window_set_default_size((GtkWindow *)window, surface.resolution.x, surface.resolution.y);
-
+          //gtk_widget_set_size_request(             window, surface.resolution.x, surface.resolution.y);
      }
 
      void setup(int _w=-1, int _h=-1){
@@ -77,31 +83,11 @@ public :
           g_signal_connect(window, "key-press-event",     G_CALLBACK(key_press_event),     &surface);
           g_signal_connect(window, "key-release-event",   G_CALLBACK(key_release_event),   &surface);
           g_signal_connect(canvas, "draw",                G_CALLBACK(draw_event),          &surface);
-          g_signal_connect(canvas, "window_state_event",  G_CALLBACK(window_state_event),   &surface);
-          //window_state_event
+          g_signal_connect(window, "size_allocate"     ,  G_CALLBACK(window_resize_event), this);
           g_signal_connect(window, "destroy",             G_CALLBACK(gtk_main_quit),       NULL);
 
           g_timeout_add(1, (GSourceFunc)loop_event, canvas);
           
-          // ~~~ CSS setting ~~~
-          
-          GtkCssProvider * provider = gtk_css_provider_new ();
-          GdkDisplay *     display;
-          GdkScreen *      screen;
-
-          display = gdk_display_get_default ();
-          screen = gdk_display_get_default_screen (display);
-          gtk_style_context_add_provider_for_screen (screen,GTK_STYLE_PROVIDER(provider),GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-          gsize bytes_written, bytes_read;
-          const gchar * home = "cairo_sparkle_gui/casp_gui_style.css";
-          GError * error = 0;
-
-          gtk_css_provider_load_from_path (provider,g_filename_to_utf8(home, strlen(home), &bytes_read, &bytes_written, &error),NULL);
-          g_object_unref (provider);
-
-          // ---
-
           gtk_container_add(GTK_CONTAINER(window), canvas);
 
           window_scale(_w,_h);
@@ -138,3 +124,13 @@ public :
           }
      }
 };
+
+
+static gboolean
+window_resize_event(GtkWidget * _widget, GdkRectangle * _allocation, gpointer _data){
+     int w,h;
+     gtk_window_get_size((GtkWindow*)_widget, &w, &h);
+     casp_gui_host * _host = (casp_gui_host * )_data;
+     _host -> window_scale(w,h);
+     return true;
+}

@@ -3,7 +3,7 @@
 class casp_surface{
 
 public:
-     casp_xy<double> xy, resolution, resolution_ratio;
+     casp_xy<double> xy, resolution;
      double range, zoom = 1;
      cairo_t * cr;
      std::set<uint> keys;
