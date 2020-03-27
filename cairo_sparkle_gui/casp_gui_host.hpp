@@ -24,15 +24,7 @@ key_release_event(GtkWidget * _widget, GdkEventKey * _event, gpointer _data){
 }
 
 static gboolean
-draw_event(GtkWidget * _widget, cairo_t * _cr, gpointer _data){
-     casp_surface * _surface = (casp_surface * )_data;
-     _surface -> cr = _cr;
-     cairo_set_source_rgba(_surface->cr, 1.0, 1.0, 1.0, 1.0);
-     cairo_rectangle(_surface->cr, 0, 0, _surface->resolution.x, _surface->resolution.y);
-     cairo_fill(_surface->cr);
-     casp_gui_main();
-     return true;
-}
+draw_event(GtkWidget * _widget, cairo_t * _cr, gpointer _data);
 
 static gboolean
 window_resize_event(GtkWidget * _widget, GdkRectangle * _allocation, gpointer _data);
@@ -52,20 +44,21 @@ private:
      GtkWidget * canvas;
 
 public :
-     casp_surface surface;
-     casp_xy<double> resolution_ratio={1.4,1};
-
+     casp_surface surface; 
+     
      void window_scale(int _w=-1, int _h=-1){
-          casp_xy<double> _resolution = surface.resolution;
+          casp_xy<double> _scale = surface.scale;
           
-          if(_w!=-1) _resolution.x = _w;
-          if(_h!=-1) _resolution.y = _h;
-          surface.resolution.y =
-               std::min (_resolution.x/resolution_ratio.x*resolution_ratio.y,_resolution.y);
-          surface.resolution.x =
-               std::min (_resolution.x,_resolution.y/resolution_ratio.y*resolution_ratio.x);
-          gtk_window_set_default_size((GtkWindow *)window, surface.resolution.x, surface.resolution.y);
-          //gtk_widget_set_size_request(             window, surface.resolution.x, surface.resolution.y);
+          if(_w!=-1) _scale.x = _w;
+          if(_h!=-1) _scale.y = _h;
+          surface.scale.y =
+               std::min (_scale.x/surface.scale_ratio.x*surface.scale_ratio.y,
+                              _scale.y);
+          surface.scale.x =
+               std::min (_scale.x,
+                              _scale.y/surface.scale_ratio.y*surface.scale_ratio.x);
+               
+          gtk_window_set_default_size((GtkWindow *)window, surface.scale.x, surface.scale.y);
      }
 
      void setup(int _w=-1, int _h=-1){
@@ -82,7 +75,7 @@ public :
           
           g_signal_connect(window, "key-press-event",     G_CALLBACK(key_press_event),     &surface);
           g_signal_connect(window, "key-release-event",   G_CALLBACK(key_release_event),   &surface);
-          g_signal_connect(canvas, "draw",                G_CALLBACK(draw_event),          &surface);
+          g_signal_connect(window, "draw",                G_CALLBACK(draw_event),          this);
           g_signal_connect(window, "size_allocate"     ,  G_CALLBACK(window_resize_event), this);
           g_signal_connect(window, "destroy",             G_CALLBACK(gtk_main_quit),       NULL);
 
@@ -125,6 +118,23 @@ public :
      }
 };
 
+static gboolean
+draw_event(GtkWidget * _widget, cairo_t * _cr, gpointer _data){
+     casp_gui_host * _host = (casp_gui_host * )_data;
+     casp_surface * _surface = &_host->surface;
+     _surface -> cr = _cr;
+     cairo_set_source_rgba(_surface->cr, 1.0, 1.0, 1.0, 1.0);
+     int w,h;
+     gtk_window_get_size((GtkWindow*)_widget, &w, &h);
+     _surface->scale.x = (double)w;
+     _surface->scale.y = (double)h;
+     cairo_rectangle(_surface->cr, 0, 0, _surface->scale.x, _surface->scale.y);
+     cairo_fill(_surface->cr);
+     casp_gui_main();
+
+     return true;
+}
+
 
 static gboolean
 window_resize_event(GtkWidget * _widget, GdkRectangle * _allocation, gpointer _data){
@@ -134,3 +144,4 @@ window_resize_event(GtkWidget * _widget, GdkRectangle * _allocation, gpointer _d
      _host -> window_scale(w,h);
      return true;
 }
+

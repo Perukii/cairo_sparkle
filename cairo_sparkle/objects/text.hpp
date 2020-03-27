@@ -37,14 +37,23 @@ public:
           cairo_text_extents_t extents;
           cairo_text_extents (surface->cr, text.c_str(), &extents);
 
+          double d_extent, d_font;
+
+          d_extent = (double)extents.width/(double)extents.height;
+
+          if(xywh.h==casp_auto){
+               xywh.h = xywh.w/d_extent;
+          }
+          
+          if(xywh.w==casp_auto){
+               xywh.w = xywh.h*d_extent;
+          }
+
           if(make_allowed()){
                d_xywh = surface->make_xywh(xywh);
           }
 
-          double d_extent, d_font;
-
-          d_extent = (double)extents.width/(double)extents.height;
-          d_font   = (xywh.h==casp_auto) ? d_xywh.w/d_extent : d_xywh.h ;
+          d_font   = d_xywh.h;
 
           cairo_set_font_size(surface->cr,d_font);
           cairo_move_to(surface->cr, d_xywh.x-d_font*d_extent*pivot.x,
