@@ -1,10 +1,10 @@
 
 test
-test.cpp
 
-example.cpp
 
 .vscode
 .git
+
 *.png
 *.sh
+*.cpp
