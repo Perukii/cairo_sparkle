@@ -1,7 +1,5 @@
 
 
-void casp_gui_main();
-
 void casp_gui_init(int _argc, char ** _argv){
      gtk_init(&_argc, &_argv);
 }
@@ -51,14 +49,10 @@ public :
           
           if(_w!=-1) _scale.x = _w;
           if(_h!=-1) _scale.y = _h;
-          surface.scale.y =
-               std::min (_scale.x/surface.scale_ratio.x*surface.scale_ratio.y,
-                              _scale.y);
-          surface.scale.x =
-               std::min (_scale.x,
-                              _scale.y/surface.scale_ratio.y*surface.scale_ratio.x);
-               
+          
+          surface.scale=_scale;
           gtk_window_set_default_size((GtkWindow *)window, surface.scale.x, surface.scale.y);
+          
      }
 
      void setup(int _w=-1, int _h=-1){
@@ -82,7 +76,7 @@ public :
           g_timeout_add(1, (GSourceFunc)loop_event, canvas);
           
           gtk_container_add(GTK_CONTAINER(window), canvas);
-
+          
           window_scale(_w,_h);
      }
 
@@ -123,14 +117,7 @@ draw_event(GtkWidget * _widget, cairo_t * _cr, gpointer _data){
      casp_gui_host * _host = (casp_gui_host * )_data;
      casp_surface * _surface = &_host->surface;
      _surface -> cr = _cr;
-     cairo_set_source_rgba(_surface->cr, 1.0, 1.0, 1.0, 1.0);
-     int w,h;
-     gtk_window_get_size((GtkWindow*)_widget, &w, &h);
-     _surface->scale.x = (double)w;
-     _surface->scale.y = (double)h;
-     cairo_rectangle(_surface->cr, 0, 0, _surface->scale.x, _surface->scale.y);
-     cairo_fill(_surface->cr);
-     casp_gui_main();
+     casp_main();
 
      return true;
 }
