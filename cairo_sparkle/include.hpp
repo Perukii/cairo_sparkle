@@ -4,6 +4,8 @@
 #include <set>
 #include <string>
 
+void casp_init(int _argc, char ** _argv){ gtk_init(&_argc, &_argv); }
+
 void casp_main();
 
 #include "fundamental_math.hpp"

@@ -1,25 +1,10 @@
 
 
-void casp_gui_init(int _argc, char ** _argv){
-     gtk_init(&_argc, &_argv);
-}
+static gboolean
+key_press_event(GtkWidget * _widget, GdkEventKey * _event, gpointer _data);
 
 static gboolean
-key_press_event(GtkWidget * _widget, GdkEventKey * _event, gpointer _data){
-     casp_surface * _surface = (casp_surface * )_data;
-     //_surface -> key = _event->keyval;
-     _surface -> keys.insert(_event->keyval);
-
-     return true;
-}
-
-static gboolean
-key_release_event(GtkWidget * _widget, GdkEventKey * _event, gpointer _data){
-     casp_surface * _surface = (casp_surface * )_data;
-     //_surface -> key = _event->keyval;
-     _surface -> keys.erase(_event->keyval);
-     return true;
-}
+key_release_event(GtkWidget * _widget, GdkEventKey * _event, gpointer _data);
 
 static gboolean
 draw_event(GtkWidget * _widget, cairo_t * _cr, gpointer _data);
@@ -30,7 +15,6 @@ window_resize_event(GtkWidget * _widget, GdkRectangle * _allocation, gpointer _d
 
 static gboolean
 loop_event(GtkWidget * widget){
-     
      gtk_widget_queue_draw(widget);
      return true;
 }
@@ -43,6 +27,12 @@ private:
 
 public :
      casp_surface surface; 
+     uint skey;
+     std::set<uint> keys;
+
+     casp_gui_host(){
+          keys.clear();
+     }
      
      void window_scale(int _w=-1, int _h=-1){
           casp_xy<double> _scale = surface.scale;
@@ -67,8 +57,8 @@ public :
 
           // ~~~ signals ~~~
           
-          g_signal_connect(window, "key-press-event",     G_CALLBACK(key_press_event),     &surface);
-          g_signal_connect(window, "key-release-event",   G_CALLBACK(key_release_event),   &surface);
+          g_signal_connect(window, "key-press-event",     G_CALLBACK(key_press_event),     this);
+          g_signal_connect(window, "key-release-event",   G_CALLBACK(key_release_event),   this);
           g_signal_connect(window, "draw",                G_CALLBACK(draw_event),          this);
           g_signal_connect(window, "size_allocate"     ,  G_CALLBACK(window_resize_event), this);
           g_signal_connect(window, "destroy",             G_CALLBACK(gtk_main_quit),       NULL);
@@ -81,13 +71,29 @@ public :
      }
 
      void run(){
-          
           gtk_widget_show_all(window);
           gtk_main();
      }
 
+     bool key_retain(int value){
+          return keys.find(value)!=keys.end();
+     }
+
+     bool key_press(int value){
+          bool result = ( skey == value );
+          skey = 0;
+          return result;
+     }
+
+     void key_debug(){
+          for(auto key:keys){
+               std::cout<<key<<" ";
+          }
+          if(keys.size()) std::cout<<std::endl;
+     }
+
      void debug_QWEASD(){
-          for(auto key:surface.keys){
+          for(auto key:keys){
                switch(key){
                     case 113: // q
                          surface.zoom/=1.05;
@@ -111,6 +117,24 @@ public :
           }
      }
 };
+
+static gboolean
+key_press_event(GtkWidget * _widget, GdkEventKey * _event, gpointer _data){
+     casp_gui_host * _host = (casp_gui_host * )_data;
+     if(_host -> key_retain(_event->keyval) == false){
+          _host -> skey = _event->keyval;
+          _host -> keys.insert(_event->keyval);
+     }
+     return true;
+}
+
+static gboolean
+key_release_event(GtkWidget * _widget, GdkEventKey * _event, gpointer _data){
+     casp_gui_host * _host = (casp_gui_host * )_data;
+     _host -> keys.erase(_event->keyval);
+     return true;
+}
+
 
 static gboolean
 draw_event(GtkWidget * _widget, cairo_t * _cr, gpointer _data){

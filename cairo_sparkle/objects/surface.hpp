@@ -7,7 +7,7 @@ public:
      double range, zoom = 1;
      cairo_t * cr;
      bool make_norm = casp_make_norm_w;
-     std::set<uint> keys;
+
      
      casp_surface(double _x=0, double _y=0, double _w=0, double _h=0,
                     double _range=10){
@@ -16,7 +16,7 @@ public:
           scale.x = _w;
           scale.y = _h;
           range =_range;
-          keys.clear();
+          
      }
 
      void fill_white(){
