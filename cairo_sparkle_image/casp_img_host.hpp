@@ -2,7 +2,7 @@
 
 class casp_img_host{
 public :
-     casp_surface surface;
+     casp_surface * surface;
      cairo_surface_t * image;
 
      ~casp_img_host(){
@@ -10,19 +10,20 @@ public :
      }
 
      void image_scale(int _w=-1, int _h=-1){
-          casp_xy<double> _scale = surface.scale;
+          casp_xy<double> _scale = surface -> scale;
           
           if(_w!=-1) _scale.x = _w;
           if(_h!=-1) _scale.y = _h;
 
-          surface.scale = _scale;
+          surface -> scale = _scale;
           
      }
 
-     void setup(int _w=-1, int _h=-1){
+     void setup(casp_surface * _surface, int _w=-1, int _h=-1){
+          surface = _surface;
           image_scale(_w,_h);
-          image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, surface.scale.x, surface.scale.y);
-          surface.cr = cairo_create(image);
+          image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, surface -> scale.x, surface -> scale.y);
+          surface -> cr = cairo_create(image);
      }
 
      void write_png(std::string _file){

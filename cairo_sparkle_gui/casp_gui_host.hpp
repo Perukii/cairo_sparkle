@@ -26,7 +26,7 @@ private:
      GtkWidget * canvas;
 
 public :
-     casp_surface surface; 
+     casp_surface * surface; 
      uint skey;
      std::set<uint> keys;
 
@@ -35,18 +35,20 @@ public :
      }
      
      void window_scale(int _w=-1, int _h=-1){
-          casp_xy<double> _scale = surface.scale;
+          casp_xy<double> _scale = surface -> scale;
           
           if(_w!=-1) _scale.x = _w;
           if(_h!=-1) _scale.y = _h;
           
-          surface.scale=_scale;
-          gtk_window_set_default_size((GtkWindow *)window, surface.scale.x, surface.scale.y);
+          surface -> scale=_scale;
+          gtk_window_set_default_size((GtkWindow *)window, surface -> scale.x, surface -> scale.y);
           
      }
 
-     void setup(int _w=-1, int _h=-1){
+     void setup(casp_surface * _surface ,int _w=-1, int _h=-1){
           
+          surface = _surface;
+
           // ~~~ definition ~~~
 
           window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -96,22 +98,22 @@ public :
           for(auto key:keys){
                switch(key){
                     case 113: // q
-                         surface.zoom/=1.05;
+                         surface -> zoom/=1.05;
                          break;
                     case 119: // w
-                         surface.xy.y-=0.1;
+                         surface -> xy.y-=0.1;
                          break;
                     case 101: // e
-                         surface.zoom*=1.05;
+                         surface -> zoom*=1.05;
                          break;
                     case 97 : // a
-                         surface.xy.x-=0.1;
+                         surface -> xy.x-=0.1;
                          break;
                     case 115: // s
-                         surface.xy.y+=0.1;
+                         surface -> xy.y+=0.1;
                          break;
                     case 100: // d
-                         surface.xy.x+=0.1;
+                         surface -> xy.x+=0.1;
                          break;
                }
           }
@@ -139,7 +141,7 @@ key_release_event(GtkWidget * _widget, GdkEventKey * _event, gpointer _data){
 static gboolean
 draw_event(GtkWidget * _widget, cairo_t * _cr, gpointer _data){
      casp_gui_host * _host = (casp_gui_host * )_data;
-     casp_surface * _surface = &_host->surface;
+     casp_surface * _surface = _host->surface;
      _surface -> cr = _cr;
      casp_main();
 

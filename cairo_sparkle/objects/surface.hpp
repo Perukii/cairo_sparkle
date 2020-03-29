@@ -6,6 +6,7 @@ public:
      casp_xy<double> xy, scale;
      double range, zoom = 1;
      cairo_t * cr;
+     
      bool make_norm = casp_make_norm_w;
 
      
