@@ -30,33 +30,41 @@ public:
      }
 
 
-     void setup_stroke(bool _stroke, double _stroke_w, casp_rgb _color_stroke=casp_rgb_null){
-          stroke      =_stroke;
-          stroke_w    =_stroke_w;
-          color_stroke=_color_stroke;
+     void setup_stroke(double _stroke_w, casp_rgb _color_stroke=casp_rgb_null){
+          stroke      = true;
+          stroke_w    = _stroke_w;
+          color_stroke= _color_stroke;
      }
 
+private:
+     void rectangle(){
+          cairo_rectangle(surface->cr, d_xywh.x-d_xywh.w*pivot.x, d_xywh.y-d_xywh.h*pivot.y,
+                                        d_xywh.w, d_xywh.h);
+     }
 
-     void draw_rect(bool strokein = false){
-          casp_rgb d_color = strokein ? color_stroke:color;
-          cairo_set_source_rgba(surface->cr, d_color.r, d_color.g, d_color.b, d_color.a);
+public:
+     void draw_rect(){
+          //casp_rgb d_color = strokein ? color_stroke:color;
+          //cairo_set_source_rgba(surface->cr, d_color.r, d_color.g, d_color.b, d_color.a);
+          cairo_set_source_rgba(surface->cr, color.r, color.g, color.b, color.a);
 
           if(make_allowed()) d_xywh = surface->make_xywh(xywh);
+          rectangle();
           
-          cairo_rectangle(surface->cr, d_xywh.x-d_xywh.w*pivot.x, d_xywh.y-d_xywh.h*pivot.y,
-                              d_xywh.w, d_xywh.h);
-          if(strokein){
-               if(make_allowed()) d_stroke_w = surface->make_w(stroke_w);
-               cairo_set_line_width(surface->cr, d_stroke_w);
-               cairo_stroke(surface->cr);
-          }
-          else{
-               cairo_fill(surface->cr);
-               if(stroke) draw_rect(true);
-          }
+          cairo_fill(surface->cr);
+          if(stroke) draw_stroke();
 
           d_set = true;
           
+     }
+     
+     void draw_stroke(){
+          cairo_set_source_rgba(surface->cr,
+                    color_stroke.r, color_stroke.g, color_stroke.b, color_stroke.a);
+          rectangle();
+          if(make_allowed()) d_stroke_w = surface->make_w(stroke_w);
+          cairo_set_line_width(surface->cr, d_stroke_w);
+          cairo_stroke(surface->cr);
      }
 
 

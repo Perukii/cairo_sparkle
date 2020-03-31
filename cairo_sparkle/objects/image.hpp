@@ -1,5 +1,5 @@
 
-class casp_image : public casp_object{
+class casp_image : public casp_rect{
 
 public:
      cairo_surface_t * image;
@@ -37,14 +37,18 @@ public:
           if(make_allowed()) d_xywh = surface->make_xywh(xywh);
           d_xywh.w /= resolution.x;
           d_xywh.h /= resolution.y;
-               
-          cairo_scale(surface->cr, d_xywh.w, d_xywh.h);
           
+          cairo_scale(surface->cr, d_xywh.w, d_xywh.h);
           cairo_set_source_surface(surface->cr, image, 
                     d_xywh.x/d_xywh.w-resolution.x*pivot.x,
                     d_xywh.y/d_xywh.h-resolution.y*pivot.y);
-          
+          cairo_scale(surface->cr, 1/d_xywh.w, 1/d_xywh.h);
           cairo_paint(surface->cr);
+          
+          //cairo_set_source_rgb(surface->cr, 0.0, 0.0, 0.0);
+          //cairo_surface_destroy(image);
+
+          //if(stroke) draw_stroke();
      }
 
 };
