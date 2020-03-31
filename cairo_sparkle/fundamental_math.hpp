@@ -59,6 +59,7 @@ public:
           r=_r; g=_g; b=_b; a=_a;
      }
 
+
      casp_rgb operator+ (casp_rgb _p) { return casp_rgb(r+_p.r,g+_p.g,b+_p.b,a+_p.a); }
      casp_rgb operator- (casp_rgb _p) { return casp_rgb(r-_p.r,g-_p.g,b-_p.b,a-_p.a); }
      casp_rgb operator* (casp_rgb _p) { return casp_rgb(r*_p.r,g*_p.g,b*_p.b,a*_p.a); }

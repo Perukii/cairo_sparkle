@@ -19,4 +19,5 @@ void casp_main();
 #include "objects/object.hpp"
 #include "objects/rect.hpp"
 #include "objects/text.hpp"
+#include "objects/image.hpp"
 #include "objects/functions.hpp"

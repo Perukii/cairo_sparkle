@@ -29,6 +29,7 @@ public :
      void write_png(std::string _file){
           cairo_surface_flush(image);
           cairo_surface_write_to_png(image, _file.c_str());
+          std::cout<<"Wrote to png : "<<_file<<std::endl;
      }
 
 
