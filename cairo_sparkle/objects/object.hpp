@@ -5,7 +5,7 @@ class casp_object{
 
 public:
      casp_xy  <double> pivot;
-     casp_rgb color;
+     //casp_rgb color;
      casp_xywh<double> xywh;
 
 protected:

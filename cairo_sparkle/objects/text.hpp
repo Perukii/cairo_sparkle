@@ -2,33 +2,36 @@
 
 
 
-class casp_text : public casp_object{
+class casp_text : public casp_rect{
 public:
      std::string text;
+     casp_rgb color_text;
 
      casp_text(std::string _text="", double _x=0, double _y=0, double _w=0, double _h=0,
-                    casp_rgb _color=casp_rgb_null,
+                    casp_rgb _color_text=casp_rgb_null,
                     double _pivx=0.5, double _pivy=0.5){
-          setup_text(_text, _x, _y, _w, _h, _color, _pivx, _pivy);
+          setup_text(_text, _x, _y, _w, _h, _color_text, _pivx, _pivy);
      }
      
      void setup_text(std::string _text="", double _x=0, double _y=0, double _w=0, double _h=0,
-                    casp_rgb _color=casp_rgb_null,
+                    casp_rgb _color_text=casp_rgb_null,
                     double _pivx=0.5, double _pivy=0.5){
           text = _text;
           xywh.x=_x;
           xywh.y=_y;
           xywh.w=_w;
           xywh.h=_h;
-          color =_color;
+          color_text =_color_text;
           pivot.x=_pivx;
           pivot.y=_pivy;
           setup_surface();
      }
 
      void draw_text(){
+
+          if(rect)draw_rect();
           
-          cairo_set_source_rgba(surface->cr, color.r, color.g, color.b, color.a);
+          cairo_set_source_rgba(surface->cr, color_text.r, color_text.g, color_text.b, color_text.a);
 
           cairo_select_font_face(surface->cr, "Arial",
                CAIRO_FONT_SLANT_NORMAL,
@@ -59,6 +62,8 @@ public:
           cairo_move_to(surface->cr, d_xywh.x-d_font*d_extent*pivot.x,
                          d_xywh.y+d_font*(1-pivot.y) );
           cairo_show_text(surface->cr, text.c_str());
+
+          if(stroke)draw_stroke();
      }
 
 

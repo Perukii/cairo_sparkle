@@ -4,25 +4,30 @@ class casp_rect : public casp_object{
 public:
 
      // stroke
-     bool stroke = false;
+     bool rect = false,stroke = false;
      double stroke_w = 0, d_stroke_w;
      casp_rgb color_stroke = casp_rgb_null;
+     casp_rgb color_rect;
 
      casp_rect(double _x=0, double _y=0, double _w=0, double _h=0,
-                    casp_rgb _color=casp_rgb_null,
+                    casp_rgb _color_rect=casp_rgb_null,
                     double _pivx=0.5, double _pivy=0.5){
-          setup_rect(_x, _y, _w, _h, _color, _pivx, _pivy);
+          setup_rect(_x, _y, _w, _h, _color_rect, _pivx, _pivy);
      }
 
+     void setup_rect(casp_rgb _color_rect=casp_rgb_null){
+          color_rect = _color_rect;
+     }
 
      void setup_rect(double _x=0, double _y=0, double _w=0, double _h=0,
-                    casp_rgb _color=casp_rgb_null,
+                    casp_rgb _color_rect=casp_rgb_null,
                     double _pivx=0.5, double _pivy=0.5){
+          rect = true;
           xywh.x=_x;
           xywh.y=_y;
           xywh.w=_w;
           xywh.h=_h;
-          color =_color;
+          color_rect =_color_rect;
 
           pivot.x=_pivx;
           pivot.y=_pivy;
@@ -46,7 +51,7 @@ public:
      void draw_rect(){
           //casp_rgb d_color = strokein ? color_stroke:color;
           //cairo_set_source_rgba(surface->cr, d_color.r, d_color.g, d_color.b, d_color.a);
-          cairo_set_source_rgba(surface->cr, color.r, color.g, color.b, color.a);
+          cairo_set_source_rgba(surface->cr, color_rect.r, color_rect.g, color_rect.b, color_rect.a);
 
           if(make_allowed()) d_xywh = surface->make_xywh(xywh);
           rectangle();

@@ -44,11 +44,8 @@ public:
                     d_xywh.y/d_xywh.h-resolution.y*pivot.y);
           cairo_scale(surface->cr, 1/d_xywh.w, 1/d_xywh.h);
           cairo_paint(surface->cr);
-          
-          //cairo_set_source_rgb(surface->cr, 0.0, 0.0, 0.0);
-          //cairo_surface_destroy(image);
-
-          //if(stroke) draw_stroke();
+          if(rect)  draw_rect();
+          if(stroke)draw_stroke();
      }
 
 };
