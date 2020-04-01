@@ -29,20 +29,25 @@ public:
 
      void draw_text(){
 
-          if(rect)draw_rect();
+          if(rect) draw_rect();
           
           cairo_set_source_rgba(surface->cr, color_text.r, color_text.g, color_text.b, color_text.a);
 
-          cairo_select_font_face(surface->cr, "Arial",
+          cairo_select_font_face(surface->cr, "Sans",
                CAIRO_FONT_SLANT_NORMAL,
                CAIRO_FONT_WEIGHT_NORMAL);
 
           cairo_text_extents_t extents;
+
+          //cairo_set_font_size(surface->cr,1);
           cairo_text_extents (surface->cr, text.c_str(), &extents);
 
           double d_extent, d_font;
 
-          d_extent = (double)extents.width/(double)extents.height;
+          //std::cout<<surface->make_h(extents.y_bearing)<<std::endl;
+          
+          d_extent = (double)extents.width
+                         /(double)extents.height;
 
           if(xywh.h==casp_auto){
                xywh.h = xywh.w/d_extent;
@@ -60,7 +65,7 @@ public:
 
           cairo_set_font_size(surface->cr,d_font);
           cairo_move_to(surface->cr, d_xywh.x-d_font*d_extent*pivot.x,
-                         d_xywh.y+d_font*(1-pivot.y) );
+                         d_xywh.y+d_font*(1-pivot.y));
           cairo_show_text(surface->cr, text.c_str());
 
           if(stroke)draw_stroke();

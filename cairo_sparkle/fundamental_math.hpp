@@ -23,7 +23,8 @@ public:
      bool    operator==(casp_xy _p) { return x==_p.x and y==_p.y; }
      bool    operator!=(casp_xy _p) { return x!=_p.x or  y!=_p.y; }
 
-     //friend ostream & operator<<(ostream & opt,casp_xy _p) { return opt<<'['<<_p.x<<':'<<_p.y<<']'; }
+     friend std::ostream & operator<<(std::ostream & opt,casp_xy _p)
+          { return opt<<'['<<_p.x<<':'<<_p.y<<']'; }
 
 };
 
@@ -48,6 +49,9 @@ public:
 
      bool      operator==(casp_xywh _p) { return x==_p.x and y==_p.y and w==_p.w and h==_p.h; }
      bool      operator!=(casp_xywh _p) { return x!=_p.x or  y!=_p.y or  w!=_p.w or  h!=_p.h; }
+
+     friend std::ostream & operator<<(std::ostream & opt,casp_xywh _p)
+          { return opt<<'['<<_p.x<<':'<<_p.y<<':'<<_p.w<<':'<<_p.h<<']'; }
 };
 
 
@@ -72,19 +76,8 @@ public:
 
      bool      operator==(casp_rgb _p) { return r==_p.r and g==_p.g and b==_p.b and a==_p.a; }
      bool      operator!=(casp_rgb _p) { return r!=_p.r or  g!=_p.g or  b!=_p.b or  a!=_p.a; }
+
+     friend std::ostream & operator<<(std::ostream & opt,casp_rgb _p)
+          { return opt<<'['<<_p.r<<':'<<_p.g<<':'<<_p.b<<':'<<_p.a<<']'; }
 };
 
-
-#define casp_rgb_null   casp_rgb(0,0,0,0)
-#define casp_rgb_black  casp_rgb(0,0,0,1)
-#define casp_rgb_red    casp_rgb(1,0,0,1)
-#define casp_rgb_green  casp_rgb(0,1,0,1)
-#define casp_rgb_blue   casp_rgb(0,0,1,1)
-#define casp_rgb_yellow casp_rgb(1,1,0,1)
-#define casp_rgb_sky    casp_rgb(0,1,1,1)
-#define casp_rgb_pink   casp_rgb(1,0,1,1)
-#define casp_rgb_white  casp_rgb(1,1,1,1)
-
-#define casp_rgb_adv_naturalGreen casp_rgb(0.60,0.96,0.52)
-#define casp_rgb_adv_skyBlue      casp_rgb(0.56,0.88,1.00)
-#define casp_rgb_adv_autumnRed    casp_rgb(1.00,0.60,0.46)
