@@ -39,11 +39,11 @@ private:
      GtkWidget * canvas;
      
 public :
-     casp_surface * surface; 
-     uint           skey, sbutton;
-     int            scroll;
-     std::set<uint> keys, buttons;
-     casp_xy<int>   mouse_pos;
+     casp_surface *  surface; 
+     uint            skey, sbutton;
+     int             scroll;
+     std::set<uint>  keys, buttons;
+     casp_xy<int>    mouse_pos;
 
      casp_gui_host(){
           keys.clear();
@@ -55,12 +55,11 @@ public :
           if(_w!=-1) _scale.x = _w;
           if(_h!=-1) _scale.y = _h;
           
-          surface -> scale=_scale;
+          surface -> set_scale(_scale);
           gtk_window_set_default_size((GtkWindow *)window, surface -> scale.x, surface -> scale.y);
-          
      }
 
-     void setup(casp_surface * _surface ,int _w=-1, int _h=-1){
+     void setup(casp_surface * _surface ,int _w=-1, int _h=-1, int _norm=casp_make_norm_w){
           
           surface = _surface;
 
@@ -97,7 +96,7 @@ public :
           );
 
           gtk_container_add(GTK_CONTAINER(window), canvas);
-          
+          surface -> make_norm = casp_make_norm_h;
           window_scale(_w,_h);
      }
 

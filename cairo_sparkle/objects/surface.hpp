@@ -3,7 +3,7 @@
 class casp_surface{
 
 public:
-     casp_xy<double> xy, scale;
+     casp_xy<double> xy, scale, scale_range;
      double range, zoom = 1;
      cairo_t * cr;
      
@@ -11,14 +11,22 @@ public:
 
      
      casp_surface(double _x=0, double _y=0, double _w=0, double _h=0,
-                    double _range=10){
+                    double _range=20){
           xy.x=_x;
           xy.y=_y;
-          scale.x = _w;
-          scale.y = _h;
           range =_range;
-          
+          set_scale({_w, _h});
+
      }
+
+     void set_scale(casp_xy<double> _tar){
+          scale = _tar;
+          scale_range.x = (make_norm == casp_make_norm_w) ? 
+                         range : range/scale.y*scale.x;
+          scale_range.y = (make_norm == casp_make_norm_h) ? 
+                         range : range/scale.x*scale.y;
+     }
+
 
      void fill_white(){
           cairo_set_source_rgba(cr, 1.0, 1.0, 1.0, 1.0);

@@ -72,5 +72,16 @@ public:
           cairo_stroke(surface->cr);
      }
 
+     bool on_point(casp_xy<double> _tar){
+          return (_tar.x >= xywh.x-xywh.w*pivot.x and _tar.x <= xywh.x+xywh.w*(1-pivot.x) )
+             and (_tar.y >= xywh.y-xywh.h*pivot.y and _tar.y <= xywh.y+xywh.h*(1-pivot.y) );
+     }
+
+     bool on_point_direct(casp_xy<double> _tar){
+          return (_tar.x >= d_xywh.x-d_xywh.w*pivot.x and _tar.x <= d_xywh.x+d_xywh.w*(1-pivot.x) )
+             and (_tar.y >= d_xywh.y-d_xywh.h*pivot.y and _tar.y <= d_xywh.y+d_xywh.h*(1-pivot.y) );
+     }
+     
+
 
 };

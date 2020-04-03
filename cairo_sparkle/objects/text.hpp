@@ -39,12 +39,9 @@ public:
 
           cairo_text_extents_t extents;
 
-          //cairo_set_font_size(surface->cr,1);
           cairo_text_extents (surface->cr, text.c_str(), &extents);
 
           double d_extent, d_font;
-
-          //std::cout<<surface->make_h(extents.y_bearing)<<std::endl;
           
           d_extent = (double)extents.width
                          /(double)extents.height;

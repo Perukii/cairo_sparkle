@@ -9,6 +9,11 @@ public:
           x=_x; y=_y;
      }
 
+     template<class TARG>
+     casp_xy(casp_xy<TARG> _p){
+          x=_p.x; y=_p.y;
+     }
+
 
      casp_xy operator+ (casp_xy _p) { return casp_xy(x+_p.x,y+_p.y); }
      casp_xy operator- (casp_xy _p) { return casp_xy(x-_p.x,y-_p.y); }
