@@ -64,7 +64,7 @@ ___
 
 # DEMO
 
-demo/DEMO_blockout.cpp
+demo/DEMO_blockout.cpp (実際にライブラリの機能で出力したPNG画像です)
 
 ![test](https://user-images.githubusercontent.com/57752033/78498979-dae63900-7788-11ea-888f-22a629cf5159.png)
 
