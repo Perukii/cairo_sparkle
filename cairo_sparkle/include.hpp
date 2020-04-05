@@ -8,8 +8,8 @@ void casp_init(int _argc, char ** _argv){ gtk_init(&_argc, &_argv); }
 void casp_main();
 
 #define casp_auto DBL_MAX
-#define casp_make_norm_w 0
-#define casp_make_norm_h 1
+#define casp_translate_norm_w 0
+#define casp_translate_norm_h 1
 
 #define casp_rgb_null   casp_rgb(0,0,0,0)
 #define casp_rgb_black  casp_rgb(0,0,0,1)

@@ -49,11 +49,9 @@ private:
 
 public:
      void draw_rect(){
-          //casp_rgb d_color = strokein ? color_stroke:color;
-          //cairo_set_source_rgba(surface->cr, d_color.r, d_color.g, d_color.b, d_color.a);
           cairo_set_source_rgba(surface->cr, color_rect.r, color_rect.g, color_rect.b, color_rect.a);
 
-          if(make_allowed()) d_xywh = surface->make_xywh(xywh);
+          if(translate_allowed()) d_xywh = surface->translate_xywh(xywh);
           rectangle();
           
           cairo_fill(surface->cr);
@@ -67,7 +65,7 @@ public:
           cairo_set_source_rgba(surface->cr,
                     color_stroke.r, color_stroke.g, color_stroke.b, color_stroke.a);
           rectangle();
-          if(make_allowed()) d_stroke_w = surface->make_w(stroke_w);
+          if(translate_allowed()) d_stroke_w = surface->translate_w(stroke_w);
           cairo_set_line_width(surface->cr, d_stroke_w);
           cairo_stroke(surface->cr);
      }
@@ -76,12 +74,5 @@ public:
           return (_tar.x >= xywh.x-xywh.w*pivot.x and _tar.x <= xywh.x+xywh.w*(1-pivot.x) )
              and (_tar.y >= xywh.y-xywh.h*pivot.y and _tar.y <= xywh.y+xywh.h*(1-pivot.y) );
      }
-
-     bool on_point_direct(casp_xy<double> _tar){
-          return (_tar.x >= d_xywh.x-d_xywh.w*pivot.x and _tar.x <= d_xywh.x+d_xywh.w*(1-pivot.x) )
-             and (_tar.y >= d_xywh.y-d_xywh.h*pivot.y and _tar.y <= d_xywh.y+d_xywh.h*(1-pivot.y) );
-     }
-     
-
 
 };

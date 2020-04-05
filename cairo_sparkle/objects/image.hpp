@@ -34,7 +34,7 @@ public:
      }
 
      void draw_image(){
-          if(make_allowed()) d_xywh = surface->make_xywh(xywh);
+          if(translate_allowed()) d_xywh = surface->translate_xywh(xywh);
           d_xywh.w /= resolution.x;
           d_xywh.h /= resolution.y;
           

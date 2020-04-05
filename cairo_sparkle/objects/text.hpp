@@ -54,8 +54,8 @@ public:
                xywh.w = xywh.h*d_extent;
           }
 
-          if(make_allowed()){
-               d_xywh = surface->make_xywh(xywh);
+          if(translate_allowed()){
+               d_xywh = surface->translate_xywh(xywh);
           }
 
           d_font   = d_xywh.h;

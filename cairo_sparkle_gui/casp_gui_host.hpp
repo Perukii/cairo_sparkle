@@ -43,7 +43,7 @@ public :
      uint            skey, sbutton;
      int             scroll;
      std::set<uint>  keys, buttons;
-     casp_xy<int>    mouse_pos;
+     casp_xy<double> mouse_pos;
 
      casp_gui_host(){
           keys.clear();
@@ -59,7 +59,7 @@ public :
           gtk_window_set_default_size((GtkWindow *)window, surface -> scale.x, surface -> scale.y);
      }
 
-     void setup(casp_surface * _surface ,int _w=-1, int _h=-1, int _norm=casp_make_norm_w){
+     void setup(casp_surface * _surface ,int _w=-1, int _h=-1, int _norm=casp_translate_norm_w){
           
           surface = _surface;
 
@@ -84,7 +84,7 @@ public :
           g_signal_connect(window, "scroll_event",        G_CALLBACK(scroll_event),        this);
           g_signal_connect(window, "destroy",             G_CALLBACK(gtk_main_quit),       NULL);
 
-          g_timeout_add(1, (GSourceFunc)loop_event, canvas);
+          g_timeout_add(15, (GSourceFunc)loop_event, canvas);
 
           gtk_widget_set_events(canvas,
                     GDK_BUTTON_PRESS_MASK |
@@ -96,7 +96,7 @@ public :
           );
 
           gtk_container_add(GTK_CONTAINER(window), canvas);
-          surface -> make_norm = casp_make_norm_h;
+          surface -> translate_norm = casp_translate_norm_h;
           window_scale(_w,_h);
      }
 
@@ -209,7 +209,8 @@ button_release_event (GtkWidget * _widget, GdkEventButton * _event, gpointer _da
 static gboolean
 motion_notify_event (GtkWidget * _widget, GdkEventMotion * _event, gpointer _data){
      casp_gui_host * _host = (casp_gui_host * )_data;
-     _host -> mouse_pos.x = _event -> x;
+     casp_surface * _surface = _host -> surface;
+     _host -> mouse_pos.x = _surface -> retranslate_x(_event -> x);
      _host -> mouse_pos.y = _event -> y;
      return true;
 }

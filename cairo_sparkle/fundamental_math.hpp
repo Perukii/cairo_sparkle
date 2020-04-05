@@ -34,26 +34,28 @@ public:
 };
 
 template<class MAIN>
-class casp_xywh{
+class casp_xywh: public casp_xy<MAIN> {
 public:
-     MAIN x, y, w, h;
+     MAIN w, h;
 
      casp_xywh(MAIN _x = 0, MAIN _y = 0, MAIN _w = 0, MAIN _h = 0){
-          x=_x; y=_y; w=_w; h=_h;
+          this -> x = _x; this -> y = _y; w = _w; h = _h;
      }
 
-     casp_xywh operator+ (casp_xywh _p) { return casp_xywh(x+_p.x,y+_p.y,w+_p.w,h+_p.h); }
-     casp_xywh operator- (casp_xywh _p) { return casp_xywh(x-_p.x,y-_p.y,w-_p.w,h-_p.h); }
-     casp_xywh operator* (casp_xywh _p) { return casp_xywh(x*_p.x,y*_p.y,w*_p.w,h*_p.h); }
-     casp_xywh operator/ (casp_xywh _p) { return casp_xywh(x/_p.x,y/_p.y,w/_p.w,h/_p.h); }
+     casp_xywh operator+ (casp_xywh _p) { return casp_xywh(this -> x +_p.x, this -> y +_p.y,w+_p.w,h+_p.h); }
+     casp_xywh operator- (casp_xywh _p) { return casp_xywh(this -> x -_p.x, this -> y -_p.y,w-_p.w,h-_p.h); }
+     casp_xywh operator* (casp_xywh _p) { return casp_xywh(this -> x *_p.x, this -> y *_p.y,w*_p.w,h*_p.h); }
+     casp_xywh operator/ (casp_xywh _p) { return casp_xywh(this -> x /_p.x, this -> y /_p.y,w/_p.w,h/_p.h); }
 
-     casp_xywh operator+=(casp_xywh _p) { x+=_p.x;y+=_p.y;w+=_p.w;h+=_p.h;return *this; }
-     casp_xywh operator-=(casp_xywh _p) { x-=_p.x;y-=_p.y;w-=_p.w;h-=_p.h;return *this; }
-     casp_xywh operator*=(casp_xywh _p) { x*=_p.x;y*=_p.y;w*=_p.w;h*=_p.h;return *this; }
-     casp_xywh operator/=(casp_xywh _p) { x/=_p.x;y/=_p.y;w/=_p.w;h/=_p.h;return *this; }
+     casp_xywh operator+=(casp_xywh _p) { this -> x +=_p.x; this -> y +=_p.y;w+=_p.w;h+=_p.h;return *this; }
+     casp_xywh operator-=(casp_xywh _p) { this -> x -=_p.x; this -> y -=_p.y;w-=_p.w;h-=_p.h;return *this; }
+     casp_xywh operator*=(casp_xywh _p) { this -> x *=_p.x; this -> y *=_p.y;w*=_p.w;h*=_p.h;return *this; }
+     casp_xywh operator/=(casp_xywh _p) { this -> x /=_p.x; this -> y /=_p.y;w/=_p.w;h/=_p.h;return *this; }
 
-     bool      operator==(casp_xywh _p) { return x==_p.x and y==_p.y and w==_p.w and h==_p.h; }
-     bool      operator!=(casp_xywh _p) { return x!=_p.x or  y!=_p.y or  w!=_p.w or  h!=_p.h; }
+     bool      operator==(casp_xywh _p) { return this -> x ==_p.x and  this -> y ==_p.y and w==_p.w and h==_p.h; }
+     bool      operator!=(casp_xywh _p) { return this -> x !=_p.x or   this -> y !=_p.y or  w!=_p.w or  h!=_p.h; }
+
+     operator casp_xy<MAIN>() const { return casp_xy<MAIN>(this -> x ,  this -> y ); }
 
      friend std::ostream & operator<<(std::ostream & opt,casp_xywh _p)
           { return opt<<'['<<_p.x<<':'<<_p.y<<':'<<_p.w<<':'<<_p.h<<']'; }

@@ -28,7 +28,7 @@ public:
      }
 
 protected:
-     bool make_allowed(){
+     bool translate_allowed(){
           return !(locked and d_set);
      }
 
