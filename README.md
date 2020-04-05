@@ -8,7 +8,9 @@ CaSpは、C++で動作する[Cairo](https://www.cairographics.org/)ベースの�
 
 また、Windowアプリケーション用・デバッグ機能のバックエンドとして[GTK3](https://www.gtk.org/)を採用しています。
 
-### 主な特徴
+___
+
+## 主な特徴
 
  - **数多くの出力形式**
    - 単一のプログラムから、**Window アプリケーション、動画、ラスタ・ベクタ画像、PDF資料**...
@@ -22,12 +24,15 @@ CaSpは、C++で動作する[Cairo](https://www.cairographics.org/)ベースの�
 
  - **限定(簡潔化)された機能量**
    - 操作のために必要な知識は少なく、入門してからすぐにでも制作に着手できるように設計しています。
-   
-### ビルド方法(現状)
+  
+  
+___
+
+## ビルド方法(現状)
 
 まだ正式なビルド環境は整備していません。
 
-##### 環境構築
+#### 環境構築
 
 Ubuntu19.10 での構築例。
 
@@ -37,7 +42,7 @@ Ubuntu19.10 での構築例。
 
 ・CaSpのcloneをダウンロード
 
-##### ビルド(現状)
+#### ビルド(現状)
 
 コンパイルするcppファイルは、cairo_sparkle/include.hpp と cairo_sparkle_gui/include.hpp を
 includeする必要があります。
@@ -45,13 +50,22 @@ includeする必要があります。
 g++、demo/DEMO.cppでのビルド例
 (clang++にも対応しています。)
 
-,,,
+```
 g++ -o [生成する実行ファイル] [コンパイルするcppファイル] $(pkg-config --cflags --libs gtk+-3.0) {PATHを通さない場合}(-I [cairo_sparkleのディレクトリ]) -l png
-,,,
+```
 
 
-demo/DEMO_blockout.cppの例
-,,,
-g++ -o DEMO demo/DEMO_blockout.cpp $(pkg-config --cflags --libs gtk+-3.0) -I /home/tada/Documents/cairo_sparkle -l png
-,,,
+demo/DEMO_blockout.cpp
+```
+g++ -o DEMO demo/DEMO_blockout.cpp $(pkg-config --cflags --libs gtk+-3.0) -I /home/user/Documents/hoge/huga/cairo_sparkle -l png
+```
+
+___
+
+# DEMO
+
+demo/DEMO_blockout.cpp
+
+![test](https://user-images.githubusercontent.com/57752033/78498979-dae63900-7788-11ea-888f-22a629cf5159.png)
+
 
