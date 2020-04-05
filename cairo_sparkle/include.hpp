@@ -6,6 +6,7 @@
 
 void casp_init(int _argc, char ** _argv){ gtk_init(&_argc, &_argv); }
 void casp_main();
+void casp_draw();
 
 #define casp_auto DBL_MAX
 #define casp_translate_norm_w 0
@@ -27,8 +28,17 @@ void casp_main();
 
 #include "fundamental_math.hpp"
 #include "objects/surface.hpp"
+
+casp_surface * casp_default_surface_target = NULL;
+
+void casp_default_surface(casp_surface * _surface){
+     casp_default_surface_target = _surface;
+}
+
 #include "objects/object.hpp"
 #include "objects/rect.hpp"
 #include "objects/text.hpp"
 #include "objects/image.hpp"
 #include "objects/functions.hpp"
+
+

@@ -1,5 +1,6 @@
 
 test
+test.cpp
 DEMO
 
 .vscode
@@ -7,4 +8,3 @@ DEMO
 
 *.png
 *.sh
-*.cpp

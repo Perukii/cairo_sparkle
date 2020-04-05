@@ -1,5 +1,5 @@
 
-casp_surface * casp_default_surface_target = NULL;
+
 
 class casp_object{
 
@@ -32,10 +32,6 @@ protected:
           return !(locked and d_set);
      }
 
-public:
      
 };
 
-void casp_default_surface(casp_surface * _surface){
-     casp_default_surface_target = _surface;
-}

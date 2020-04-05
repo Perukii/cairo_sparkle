@@ -44,9 +44,15 @@ public :
      int             scroll;
      std::set<uint>  keys, buttons;
      casp_xy<double> mouse_pos;
+     cairo_surface_t * image;
+     bool            img_taken;
 
      casp_gui_host(){
           keys.clear();
+     }
+
+     ~casp_gui_host(){
+          cairo_surface_destroy (image);
      }
      
      void window_scale(int _w=-1, int _h=-1){
@@ -100,6 +106,29 @@ public :
           window_scale(_w,_h);
      }
 
+     void reset_vals(){
+          skey    = 0;
+          sbutton = 0;
+          scroll  = 0;
+          img_taken = false;
+     }
+
+     void write_png(std::string _file){
+
+          if(img_taken == true)return;
+          img_taken = true;
+
+          image = cairo_image_surface_create 
+               (CAIRO_FORMAT_ARGB32, surface -> scale.x, surface -> scale.y);
+
+          surface -> cr = cairo_create(image);
+          casp_draw();
+
+          cairo_surface_flush(image);
+          cairo_surface_write_to_png(image, _file.c_str());
+          std::cout<<"Wrote to png : "<<_file<<std::endl;
+     }
+
      void run(){
           gtk_widget_show_all(window);
           gtk_main();
@@ -130,19 +159,19 @@ public :
                          surface -> zoom/=1.05;
                          break;
                     case 119: // w
-                         surface -> xy.y-=0.1;
+                         surface -> xy.y-=0.2;
                          break;
                     case 101: // e
                          surface -> zoom*=1.05;
                          break;
                     case 97 : // a
-                         surface -> xy.x-=0.1;
+                         surface -> xy.x-=0.2;
                          break;
                     case 115: // s
-                         surface -> xy.y+=0.1;
+                         surface -> xy.y+=0.2;
                          break;
                     case 100: // d
-                         surface -> xy.x+=0.1;
+                         surface -> xy.x+=0.2;
                          break;
                }
           }
@@ -173,9 +202,8 @@ draw_event(GtkWidget * _widget, cairo_t * _cr, gpointer _data){
      casp_surface * _surface = _host->surface;
      _surface -> cr = _cr;
      casp_main();
-     _host -> skey    = 0;
-     _host -> sbutton = 0;
-     _host -> scroll  = 0;
+     casp_draw();
+     _host -> reset_vals();
      return true;
 }
 

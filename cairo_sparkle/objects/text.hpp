@@ -9,13 +9,13 @@ public:
 
      casp_text(std::string _text="", double _x=0, double _y=0, double _w=0, double _h=0,
                     casp_rgb _color_text=casp_rgb_null,
-                    double _pivx=0.5, double _pivy=0.5){
+                    double _pivx=0, double _pivy=0){
           setup_text(_text, _x, _y, _w, _h, _color_text, _pivx, _pivy);
      }
      
      void setup_text(std::string _text="", double _x=0, double _y=0, double _w=0, double _h=0,
                     casp_rgb _color_text=casp_rgb_null,
-                    double _pivx=0.5, double _pivy=0.5){
+                    double _pivx=0, double _pivy=0){
           text = _text;
           xywh.x=_x;
           xywh.y=_y;
