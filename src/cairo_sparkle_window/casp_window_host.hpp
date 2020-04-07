@@ -22,12 +22,11 @@ static gboolean loop_event(GtkWidget *widget) {
     return true;
 }
 
-class casp_gui_host {
+class casp_window_host {
 
   private:
     GtkWidget *window;
     GtkWidget *canvas;
-
   public:
     casp_surface *surface;
     uint skey, sbutton;
@@ -36,9 +35,9 @@ class casp_gui_host {
     casp_xy<double> mouse_pos;
     cairo_surface_t *image;
 
-    casp_gui_host() { keys.clear(); }
+    casp_window_host() { keys.clear(); }
 
-    ~casp_gui_host() { cairo_surface_destroy(image); }
+    ~casp_window_host() { cairo_surface_destroy(image); }
 
     void window_scale(int _w = -1, int _h = -1) {
         casp_xy<double> _scale = surface->scale;
@@ -65,6 +64,7 @@ class casp_gui_host {
 
         gtk_widget_set_app_paintable(canvas, true);
         gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+        gtk_window_set_decorated( (GtkWindow *)window, false);
 
         // ~~~ signals ~~~
 
@@ -87,7 +87,7 @@ class casp_gui_host {
                          this);
         g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
-        g_timeout_add(15, (GSourceFunc)loop_event, canvas);
+        g_timeout_add(20, (GSourceFunc)loop_event, canvas);
 
         gtk_widget_set_events(
             canvas, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
@@ -172,11 +172,16 @@ class casp_gui_host {
             }
         }
     }
+
+    void set_titlebar(const char * title){
+        gtk_window_set_decorated( (GtkWindow *)window, true);
+        gtk_window_set_title ( (GtkWindow *)window, title);
+    }
 };
 
 static gboolean key_press_event(GtkWidget *_widget, GdkEventKey *_event,
                                 gpointer _data) {
-    casp_gui_host *_host = (casp_gui_host *)_data;
+    casp_window_host *_host = (casp_window_host *)_data;
     if (_host->get_key_retain(_event->keyval) == false) {
         _host->skey = _event->keyval;
         _host->keys.insert(_event->keyval);
@@ -186,13 +191,13 @@ static gboolean key_press_event(GtkWidget *_widget, GdkEventKey *_event,
 
 static gboolean key_release_event(GtkWidget *_widget, GdkEventKey *_event,
                                   gpointer _data) {
-    casp_gui_host *_host = (casp_gui_host *)_data;
+    casp_window_host *_host = (casp_window_host *)_data;
     _host->keys.erase(_event->keyval);
     return true;
 }
 
 static gboolean draw_event(GtkWidget *_widget, cairo_t *_cr, gpointer _data) {
-    casp_gui_host *_host = (casp_gui_host *)_data;
+    casp_window_host *_host = (casp_window_host *)_data;
     casp_surface *_surface = _host->surface;
     _surface->cr = _cr;
     casp_main();
@@ -205,14 +210,14 @@ static gboolean window_resize_event(GtkWidget *_widget,
                                     GdkRectangle *_allocation, gpointer _data) {
     int w, h;
     gtk_window_get_size((GtkWindow *)_widget, &w, &h);
-    casp_gui_host *_host = (casp_gui_host *)_data;
+    casp_window_host *_host = (casp_window_host *)_data;
     _host->window_scale(w, h);
     return true;
 }
 
 static gboolean button_press_event(GtkWidget *_widget, GdkEventButton *_event,
                                    gpointer _data) {
-    casp_gui_host *_host = (casp_gui_host *)_data;
+    casp_window_host *_host = (casp_window_host *)_data;
     if (_host->get_button_retain(_event->button) == false) {
         _host->sbutton = _event->button;
         _host->buttons.insert(_event->button);
@@ -222,14 +227,14 @@ static gboolean button_press_event(GtkWidget *_widget, GdkEventButton *_event,
 
 static gboolean button_release_event(GtkWidget *_widget, GdkEventButton *_event,
                                      gpointer _data) {
-    casp_gui_host *_host = (casp_gui_host *)_data;
+    casp_window_host *_host = (casp_window_host *)_data;
     _host->buttons.erase(_event->button);
     return true;
 }
 
 static gboolean motion_notify_event(GtkWidget *_widget, GdkEventMotion *_event,
                                     gpointer _data) {
-    casp_gui_host *_host = (casp_gui_host *)_data;
+    casp_window_host *_host = (casp_window_host *)_data;
     casp_surface *_surface = _host->surface;
     _host->mouse_pos.x = _surface->retranslate_x(_event->x);
     _host->mouse_pos.y = _event->y;
@@ -238,7 +243,7 @@ static gboolean motion_notify_event(GtkWidget *_widget, GdkEventMotion *_event,
 
 static gboolean enter_notify_event(GtkWidget *_widget, GdkEventCrossing *_event,
                                    gpointer _data) {
-    casp_gui_host *_host = (casp_gui_host *)_data;
+    casp_window_host *_host = (casp_window_host *)_data;
     _host->mouse_pos.x = _event->x;
     _host->mouse_pos.y = _event->y;
     return true;
@@ -246,7 +251,7 @@ static gboolean enter_notify_event(GtkWidget *_widget, GdkEventCrossing *_event,
 
 static gboolean scroll_event(GtkWidget *_widget, GdkEventScroll *_event,
                              gpointer _data) {
-    casp_gui_host *_host = (casp_gui_host *)_data;
+    casp_window_host *_host = (casp_window_host *)_data;
     switch (_event->direction) {
     case GDK_SCROLL_UP:
         _host->scroll = -1;
