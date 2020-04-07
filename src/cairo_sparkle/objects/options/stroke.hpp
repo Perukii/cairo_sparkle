@@ -1,0 +1,28 @@
+
+class casp_stroke{
+  public:
+    bool stroke = false;
+    double stroke_w = 0, d_stroke_w;
+    casp_rgb color_stroke = casp_rgb_null;
+
+    void draw_stroke();
+  
+  public:
+    void setup_stroke(double _stroke_w,
+                      casp_rgb _color_stroke = casp_rgb_null) {
+        stroke = true;
+        stroke_w = _stroke_w;
+        color_stroke = _color_stroke;
+    }
+
+    void draw_stroke_pre(casp_object * _obj) {
+        cairo_set_source_rgba(_obj->surface->cr, color_stroke.r, color_stroke.g,
+                              color_stroke.b, color_stroke.a);
+        if (_obj->translate_allowed())
+            d_stroke_w = _obj->surface->translate_w(stroke_w);
+        cairo_set_line_width(_obj->surface->cr, d_stroke_w);
+        cairo_stroke(_obj->surface->cr);
+    }
+
+  
+};

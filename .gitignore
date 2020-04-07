@@ -2,6 +2,9 @@
 test
 test.cpp
 DEMO
+build
+
+*.txt
 
 .vscode
 .git

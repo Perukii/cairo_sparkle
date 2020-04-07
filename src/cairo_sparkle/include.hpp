@@ -31,8 +31,12 @@ void casp_default_surface(casp_surface *_surface) {
 }
 
 #include "objects/functions.hpp"
-
 #include "objects/object.hpp"
+
+#include "objects/options/stroke.hpp"
+
 #include "objects/rect.hpp"
 #include "objects/text.hpp"
 #include "objects/image.hpp"
+#include "objects/line.hpp"
+#include "objects/circle.hpp"

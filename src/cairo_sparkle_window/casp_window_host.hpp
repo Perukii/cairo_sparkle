@@ -72,7 +72,8 @@ class casp_window_host {
                          this);
         g_signal_connect(window, "key_release_event",
                          G_CALLBACK(key_release_event), this);
-        g_signal_connect(window, "draw", G_CALLBACK(draw_event), this);
+        g_signal_connect(window, "draw",
+                         G_CALLBACK(draw_event), this);
         g_signal_connect(window, "size_allocate",
                          G_CALLBACK(window_resize_event), this);
         g_signal_connect(window, "button_press_event",
@@ -83,8 +84,8 @@ class casp_window_host {
                          G_CALLBACK(motion_notify_event), this);
         g_signal_connect(window, "enter_notify_event",
                          G_CALLBACK(enter_notify_event), this);
-        g_signal_connect(window, "scroll_event", G_CALLBACK(scroll_event),
-                         this);
+        g_signal_connect(window, "scroll_event",
+                         G_CALLBACK(scroll_event), this);
         g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
         g_timeout_add(20, (GSourceFunc)loop_event, canvas);
@@ -237,7 +238,7 @@ static gboolean motion_notify_event(GtkWidget *_widget, GdkEventMotion *_event,
     casp_window_host *_host = (casp_window_host *)_data;
     casp_surface *_surface = _host->surface;
     _host->mouse_pos.x = _surface->retranslate_x(_event->x);
-    _host->mouse_pos.y = _event->y;
+    _host->mouse_pos.y = _surface->retranslate_y(_event->y);
     return true;
 }
 

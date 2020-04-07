@@ -1,6 +1,6 @@
 
 
-#include "src/include.hpp"
+#include "src/cairo_sparkle.cpp"
 #include <cmath>
 #include <algorithm>
 
@@ -139,8 +139,8 @@ void casp_main() {
     }
 
     
-    host.surface -> zoom = 1.1;
-    host.surface -> xy = casp_xy<double>(sphere.xywh)*casp_xy<double>(0.1,0.1);
+    //host.surface -> zoom = 1.1;
+    //host.surface -> xy = casp_xy<double>(sphere.xywh)*casp_xy<double>(0.1,0.1);
 
     // ==== INPUT =====
 

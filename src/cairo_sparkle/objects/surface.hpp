@@ -53,9 +53,13 @@ class casp_surface {
     double retranslate_x(double _tar) {
         return range * (_tar - scale.x * 0.5) /
                    (translate_norm == casp_translate_norm_w ? scale.x
-                                                            : scale.y) /
-                   zoom +
-               xy.x;
+                                                            : scale.y) / zoom + xy.x;
+    }
+
+    double retranslate_y(double _tar) {
+        return range * (_tar - scale.y * 0.5) /
+                   (translate_norm == casp_translate_norm_w ? scale.x
+                                                            : scale.y) / zoom + xy.y;
     }
 
     double translate_y(double _tar) {

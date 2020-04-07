@@ -1,11 +1,11 @@
 
-class casp_rect : public casp_object {
-
+class casp_rect : public casp_object, public casp_stroke {
   public:
-    // stroke
-    bool rect = false, stroke = false;
-    double stroke_w = 0, d_stroke_w;
-    casp_rgb color_stroke = casp_rgb_null;
+    casp_xy<double> pivot;
+    casp_xywh<double> xywh;
+    casp_xywh<double> d_xywh;
+
+    bool rect = false;
     casp_rgb color_rect;
 
     casp_rect(double _x = 0, double _y = 0, double _w = 0, double _h = 0,
@@ -33,27 +33,18 @@ class casp_rect : public casp_object {
         setup_surface();
     }
 
-    void setup_stroke(double _stroke_w,
-                      casp_rgb _color_stroke = casp_rgb_null) {
-        stroke = true;
-        stroke_w = _stroke_w;
-        color_stroke = _color_stroke;
-    }
-
-  private:
-    void rectangle() {
+    void form_style() {
         cairo_rectangle(surface->cr, d_xywh.x - d_xywh.w * pivot.x,
                         d_xywh.y - d_xywh.h * pivot.y, d_xywh.w, d_xywh.h);
     }
 
-  public:
     void draw_rect() {
         cairo_set_source_rgba(surface->cr, color_rect.r, color_rect.g,
                               color_rect.b, color_rect.a);
 
         if (translate_allowed())
             d_xywh = surface->translate_xywh(xywh);
-        rectangle();
+        form_style();
 
         cairo_fill(surface->cr);
         if (stroke)
@@ -62,14 +53,9 @@ class casp_rect : public casp_object {
         d_set = true;
     }
 
-    void draw_stroke() {
-        cairo_set_source_rgba(surface->cr, color_stroke.r, color_stroke.g,
-                              color_stroke.b, color_stroke.a);
-        rectangle();
-        if (translate_allowed())
-            d_stroke_w = surface->translate_w(stroke_w);
-        cairo_set_line_width(surface->cr, d_stroke_w);
-        cairo_stroke(surface->cr);
+    void draw_stroke(){
+        form_style();
+        draw_stroke_pre(this);
     }
 
     bool on_point(casp_xy<double> _tar) {
@@ -78,4 +64,6 @@ class casp_rect : public casp_object {
                (_tar.y >= xywh.y - xywh.h * pivot.y and
                 _tar.y <= xywh.y + xywh.h * (1 - pivot.y));
     }
+
+    
 };
