@@ -8,29 +8,28 @@ class casp_rect : public casp_object, public casp_stroke {
     bool rect = false;
     casp_rgb color_rect;
 
+    
     casp_rect(double _x = 0, double _y = 0, double _w = 0, double _h = 0,
-              casp_rgb _color_rect = casp_rgb_null, double _pivx = 0.5,
-              double _pivy = 0.5) {
+                    casp_rgb _color_rect = casp_rgb_null, double _pivx = 0.5,
+                    double _pivy = 0.5) {
         setup_rect(_x, _y, _w, _h, _color_rect, _pivx, _pivy);
     }
-
-    void setup_rect(casp_rgb _color_rect = casp_rgb_null) {
-        color_rect = _color_rect;
-    }
+    
 
     void setup_rect(double _x = 0, double _y = 0, double _w = 0, double _h = 0,
                     casp_rgb _color_rect = casp_rgb_null, double _pivx = 0.5,
                     double _pivy = 0.5) {
         rect = true;
-        xywh.x = _x;
-        xywh.y = _y;
-        xywh.w = _w;
-        xywh.h = _h;
+        xywh = casp_xywh<double>(_x, _y, _w, _h);
         color_rect = _color_rect;
 
         pivot.x = _pivx;
         pivot.y = _pivy;
         setup_surface();
+    }
+
+    void setup_rect(casp_rgb _color_rect = casp_rgb_null) {
+        color_rect = _color_rect;
     }
 
     void form_style() {

@@ -181,8 +181,7 @@ void casp_draw() {
 
     if (broken == board_x * board_y) {
         casp_text("CONGRATULATIONS !", -6.0, -4.5, casp_auto, 1.2, text_color,
-                  0.0, 0.0)
-            .draw_text();
+                  0.0, 0.0).draw_text();
         if (host.get_button_press(1) == true)
             setup_game();
     }
@@ -192,7 +191,6 @@ int main(int _argc, char **_argv) {
 
     casp_init(_argc, _argv);
     host.setup(&surface, 500, 700, casp_translate_norm_w);
-    //host.set_titlebar("Blockout");
     casp_default_surface(&surface);
     setup_game();
     host.run();

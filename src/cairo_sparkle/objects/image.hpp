@@ -7,12 +7,6 @@ class casp_image : public casp_rect {
     cairo_surface_t *image;
     casp_xy<double> resolution;
 
-    casp_image(std::string _file = "", double _x = 0, double _y = 0,
-               double _w = 0, double _h = 0, double _pivx = 0.5,
-               double _pivy = 0.5) {
-        setup_image(_file, _x, _y, _w, _h, _pivx, _pivy);
-    }
-
     ~casp_image() { cairo_surface_destroy(image); }
 
     void setup_image(std::string _file = "", double _x = 0, double _y = 0,
