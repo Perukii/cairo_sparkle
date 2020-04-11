@@ -61,9 +61,7 @@ class casp_text : public casp_rect {
             xywh.w = xywh.h * d_extent;
         }
 
-        if (translate_allowed()) {
-            d_xywh = surface->translate_xywh(xywh);
-        }
+        d_xywh = surface->translate_xywh(xywh);
 
         d_font = d_xywh.h;
 

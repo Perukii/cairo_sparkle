@@ -18,13 +18,13 @@ class casp_line : public casp_object {
     void draw_line() {
         cairo_set_source_rgba(surface->cr, color_line.r, color_line.g,
                               color_line.b, color_line.a);
-        if (translate_allowed()){
-            d_w = surface->translate_w(w);
-            d_start.x = surface->translate_x(start.x);
-            d_start.y = surface->translate_y(start.y);
-            d_end  .x = surface->translate_x(end  .x);
-            d_end  .y = surface->translate_y(end  .y);
-        }
+
+        d_w = surface->translate_w(w);
+        d_start.x = surface->translate_x(start.x);
+        d_start.y = surface->translate_y(start.y);
+        d_end  .x = surface->translate_x(end  .x);
+        d_end  .y = surface->translate_y(end  .y);
+
         cairo_set_line_width(surface->cr, d_w);
 
         cairo_move_to(surface->cr, d_start.x, d_start.y);

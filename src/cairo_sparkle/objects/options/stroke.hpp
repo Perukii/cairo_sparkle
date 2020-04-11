@@ -16,10 +16,9 @@ class casp_stroke{
     }
 
     void draw_stroke_pre(casp_object * _obj) {
-        cairo_set_source_rgba(_obj->surface->cr, color_stroke.r, color_stroke.g,
-                              color_stroke.b, color_stroke.a);
-        if (_obj->translate_allowed())
-            d_stroke_w = _obj->surface->translate_w(stroke_w);
+      
+        _obj->set_color(color_stroke);
+        d_stroke_w = _obj->surface->translate_w(stroke_w);
         cairo_set_line_width(_obj->surface->cr, d_stroke_w);
         cairo_stroke(_obj->surface->cr);
     }

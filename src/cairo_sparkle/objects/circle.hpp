@@ -18,12 +18,10 @@ public:
 
     void draw_circle(){
         
-        if (translate_allowed()){
-            d_rx = surface->translate_w(rx);
-            d_ry = surface->translate_h(ry);
-            d_center.x = surface->translate_x(center.x);
-            d_center.y = surface->translate_y(center.y);
-        }
+        d_rx = surface->translate_w(rx);
+        d_ry = surface->translate_h(ry);
+        d_center.x = surface->translate_x(center.x);
+        d_center.y = surface->translate_y(center.y);
         
         set_color(color_circle);
 

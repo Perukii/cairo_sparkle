@@ -33,8 +33,8 @@ class casp_image : public casp_rect {
     }
 
     void draw_image() {
-        if (translate_allowed())
-            d_xywh = surface->translate_xywh(xywh);
+
+        d_xywh = surface->translate_xywh(xywh);
         d_xywh.w /= resolution.x;
         d_xywh.h /= resolution.y;
 

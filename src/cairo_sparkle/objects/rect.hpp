@@ -8,7 +8,6 @@ class casp_rect : public casp_object, public casp_stroke {
     bool rect = false;
     casp_rgb color_rect;
 
-    
     casp_rect(double _x = 0, double _y = 0, double _w = 0, double _h = 0,
                     casp_rgb _color_rect = casp_rgb_null, double _pivx = 0.5,
                     double _pivy = 0.5) {
@@ -38,18 +37,15 @@ class casp_rect : public casp_object, public casp_stroke {
     }
 
     void draw_rect() {
-        cairo_set_source_rgba(surface->cr, color_rect.r, color_rect.g,
-                              color_rect.b, color_rect.a);
+        set_color(color_rect);
 
-        if (translate_allowed())
-            d_xywh = surface->translate_xywh(xywh);
+        d_xywh = surface->translate_xywh(xywh);
         form_style();
 
         cairo_fill(surface->cr);
+
         if (stroke)
             draw_stroke();
-
-        d_set = true;
     }
 
     void draw_stroke(){
