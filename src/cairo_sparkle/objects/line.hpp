@@ -12,7 +12,7 @@ class casp_line : public casp_object {
         end   = casp_xy<double>(_ex, _ey);
         color_line = _color_line;
 
-        setup_surface();
+        set_surface();
     }
 
     void draw_line() {

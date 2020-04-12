@@ -23,7 +23,7 @@ class casp_image : public casp_rect {
 
         pivot.x = _pivx;
         pivot.y = _pivy;
-        setup_surface();
+        set_surface();
     }
 
     void image_register(std::string _file) {

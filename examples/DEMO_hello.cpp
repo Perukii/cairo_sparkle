@@ -5,7 +5,6 @@ casp_window_host host;
 casp_surface surface;
 casp_line line;
 casp_text text;
-casp_circle circle;
 
 int main(int _argc, char **_argv) {
 
@@ -19,9 +18,10 @@ int main(int _argc, char **_argv) {
                     7.0 , 1.0,
                     casp_rgb_adv_autumnRed);
     
-    text.setup_text("Hello,world!",-6.5, 1.0,
+    text.setup_text("Hello,world",-6.5, 1.0,
                     14.0, casp_auto,
                     casp_rgb_black, 0.0, 1.0);
+                    
     text.set_font("Arial", true, true);
 
     host.run();

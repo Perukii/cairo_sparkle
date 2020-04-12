@@ -11,7 +11,7 @@ public:
         rx = _r;
         ry = _r;
         color_circle = _color_circle;
-        setup_surface();
+        set_surface();
     }
 
     //void setup_circle_advance(); //随時実装予定

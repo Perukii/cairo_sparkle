@@ -24,7 +24,7 @@ class casp_rect : public casp_object, public casp_stroke {
 
         pivot.x = _pivx;
         pivot.y = _pivy;
-        setup_surface();
+        set_surface();
     }
 
     void setup_rect(casp_rgb _color_rect = casp_rgb_null) {

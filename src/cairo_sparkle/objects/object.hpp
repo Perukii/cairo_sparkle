@@ -12,7 +12,7 @@ class casp_object {
                     _color.b, _color.a);
     }
 
-    void setup_surface(casp_surface *_surface = casp_default_surface_target) {
+    void set_surface(casp_surface *_surface = casp_default_surface_target) {
         surface = _surface;
     }
 

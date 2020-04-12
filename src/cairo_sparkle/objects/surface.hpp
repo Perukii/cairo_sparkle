@@ -10,7 +10,7 @@ class casp_surface {
     bool translate_norm = casp_translate_norm_w;
 
     casp_surface(double _x = 0, double _y = 0, double _w = 0, double _h = 0,
-                 double _range = 20) {
+                 double _range = 20.0) {
         xy.x = _x;
         xy.y = _y;
         range = _range;

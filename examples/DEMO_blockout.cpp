@@ -9,8 +9,7 @@
 #define life_max 9
 
 // GUIホスト・メインサーフェスの定義
-casp_window_host host;
-casp_surface surface;
+casp_host host;
 
 // ブロックのクラス
 class block : public casp_rect {
@@ -40,8 +39,8 @@ void setup_game() {
 
     // 矩形オブジェクトのセットアップ (x,y,w,h,color,pivotx,pivoty)
     player.setup_rect(0.0, 8.5, 2.0, 0.5, main_color, 0.5, 0.0);
-    stage.setup_rect(0.0, 0.5, surface.scale_range.x - 1.0,
-                     surface.scale_range.y, casp_rgb_null);
+    stage.setup_rect(0.0, 0.5,  host.surface[0].scale_range.x - 1.0,
+                      host.surface[0].scale_range.y, casp_rgb_null);
     sphere.setup_rect(0.0, 8.3, 0.25, 0.25, casp_rgb_white, 0.5, 1.0);
 
     // 枠線のセットアップ (w,color)
@@ -55,9 +54,9 @@ void setup_game() {
     // ブロックのセットアップ
     for (int iy = 0; iy < board_y; iy++) {
         for (int ix = 0; ix < board_x; ix++) {
-            blocks[iy][ix].setup_rect(0.55 - surface.scale_range.x * 0.5 +
+            blocks[iy][ix].setup_rect(0.55 - host.surface[0].scale_range.x * 0.5 +
                                           (stage.xywh.w / board_x * ix) * 0.99,
-                                      0.6 - surface.scale_range.y * 0.5 +
+                                      0.6 - host.surface[0].scale_range.y * 0.5 +
                                           0.78 * iy,
                                       stage.xywh.w / board_x, 0.75,
                                       casp_rgb(0.4, 0.4, 0.4, 1.0), 0, 0);
@@ -131,7 +130,7 @@ void casp_main() {
     }
 
     // 玉を落とした時
-    if (sphere.xywh.y >= surface.scale_range.y * 0.5) {
+    if (sphere.xywh.y >= host.surface[0].scale_range.y * 0.5) {
         life_rest--;
         times = 0;
         if (life_rest < 0)
@@ -144,7 +143,7 @@ void casp_main() {
 
     // ==== INPUT =====
 
-    host.debug_QWEASD();
+    host.debug_QWEASD(0);
 
     if (host.get_key_press(32)) {
         host.write_png(
@@ -155,7 +154,7 @@ void casp_main() {
 void casp_draw() {
     // ==== DRAW ====
 
-    surface.fill_white();
+    host.surface[0].fill_white();
 
     for (int iy = 0; iy < board_y; iy++) {
         for (int ix = 0; ix < board_x; ix++) {
@@ -190,8 +189,8 @@ void casp_draw() {
 int main(int _argc, char **_argv) {
 
     casp_init(_argc, _argv);
-    host.setup(&surface, 500, 700, casp_translate_norm_w);
-    casp_default_surface(&surface);
+    host.setup_host(500, 700, casp_translate_norm_h);
+    host.set_titlebar("TEST");
     setup_game();
     host.run();
 }

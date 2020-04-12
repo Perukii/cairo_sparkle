@@ -21,7 +21,7 @@ void casp_draw();
 #define casp_rgb_adv_skyBlue casp_rgb(0.56, 0.88, 1.00)
 #define casp_rgb_adv_autumnRed casp_rgb(1.00, 0.60, 0.46)
 
-#include "fundamental_math.hpp"
+#include "fundament/fundamental_math.hpp"
 #include "objects/surface.hpp"
 
 casp_surface *casp_default_surface_target = NULL;
@@ -40,3 +40,6 @@ void casp_default_surface(casp_surface *_surface) {
 #include "objects/image.hpp"
 #include "objects/line.hpp"
 #include "objects/circle.hpp"
+
+#include "host/casp_host.hpp"
+#include "host/casp_host_debug.hpp"
