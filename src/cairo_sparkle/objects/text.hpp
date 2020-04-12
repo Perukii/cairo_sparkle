@@ -71,6 +71,6 @@ class casp_text : public casp_rect {
         cairo_show_text(surface->cr, text.c_str());
 
         if (stroke)
-            draw_stroke();
+            draw_stroke(this);
     }
 };

@@ -30,7 +30,7 @@ void casp_main(){
 }
 
 void casp_draw(){
-    host.surface[0].fill_white();
+    host.surface[0].fill();
     line.draw_line();
     text.draw_text();
 }

@@ -27,8 +27,8 @@ class casp_surface {
                             : range / scale.x * scale.y;
     }
 
-    void fill_white() {
-        cairo_set_source_rgba(cr, 1.0, 1.0, 1.0, 1.0);
+    void fill(casp_rgb _color = casp_rgb_white) {
+        cairo_set_source_rgba(cr, _color.r, _color.g, _color.b, _color.a);
         cairo_rectangle(cr, 0, 0, scale.x + 1, scale.y + 1);
         cairo_fill(cr);
     }

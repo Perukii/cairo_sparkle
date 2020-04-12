@@ -13,7 +13,6 @@ class casp_rect : public casp_object, public casp_stroke {
                     double _pivy = 0.5) {
         setup_rect(_x, _y, _w, _h, _color_rect, _pivx, _pivy);
     }
-    
 
     void setup_rect(double _x = 0, double _y = 0, double _w = 0, double _h = 0,
                     casp_rgb _color_rect = casp_rgb_null, double _pivx = 0.5,
@@ -27,30 +26,20 @@ class casp_rect : public casp_object, public casp_stroke {
         set_surface();
     }
 
-    void setup_rect(casp_rgb _color_rect = casp_rgb_null) {
-        color_rect = _color_rect;
-    }
-
-    void form_style() {
+    void draw_rect() {
+        
+        d_xywh = surface->translate_xywh(xywh);
+        
         cairo_rectangle(surface->cr, d_xywh.x - d_xywh.w * pivot.x,
                         d_xywh.y - d_xywh.h * pivot.y, d_xywh.w, d_xywh.h);
-    }
-
-    void draw_rect() {
         set_color(color_rect);
 
-        d_xywh = surface->translate_xywh(xywh);
-        form_style();
-
-        cairo_fill(surface->cr);
-
-        if (stroke)
-            draw_stroke();
-    }
-
-    void draw_stroke(){
-        form_style();
-        draw_stroke_pre(this);
+        if (stroke){
+            cairo_fill_preserve(surface->cr);
+            draw_stroke(this);
+        }
+        else if (rect)
+            cairo_fill(surface->cr);
     }
 
     bool on_point(casp_xy<double> _tar) {

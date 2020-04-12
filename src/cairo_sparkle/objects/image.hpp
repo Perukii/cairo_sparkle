@@ -47,6 +47,6 @@ class casp_image : public casp_rect {
         if (rect)
             draw_rect();
         if (stroke)
-            draw_stroke();
+            draw_stroke(this);
     }
 };

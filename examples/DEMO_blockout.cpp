@@ -154,7 +154,7 @@ void casp_main() {
 void casp_draw() {
     // ==== DRAW ====
 
-    host.surface[0].fill_white();
+    host.surface[0].fill();
 
     for (int iy = 0; iy < board_y; iy++) {
         for (int ix = 0; ix < board_x; ix++) {
