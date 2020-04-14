@@ -17,6 +17,8 @@ static gboolean enter_notify_event(GtkWidget *, GdkEventCrossing *, gpointer);
 
 static gboolean scroll_event(GtkWidget *, GdkEventScroll *, gpointer);
 
+static gboolean window_state_event(GtkWidget *, GdkEventWindowState *, gpointer);
+
 static gboolean loop_event(GtkWidget *widget) {
     casp_main();
     gtk_widget_queue_draw(widget);
@@ -35,6 +37,7 @@ class casp_host {
     int scroll, layer_size, def_translate_norm;
     std::set<uint> keys, buttons;
     casp_xy<double> mouse_pos, def_scale;
+    bool fullscreen_f, unfullscreen_f;
     cairo_surface_t *image;
 
     casp_host() { keys.clear(); }
@@ -97,6 +100,8 @@ class casp_host {
                          G_CALLBACK(enter_notify_event), this);
         g_signal_connect(window, "scroll_event",
                          G_CALLBACK(scroll_event), this);
+        g_signal_connect(window, "window_state_event",
+                         G_CALLBACK(window_state_event), this);
         g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
         g_timeout_add(20, (GSourceFunc)loop_event, canvas);
@@ -125,6 +130,8 @@ class casp_host {
         skey = 0;
         sbutton = 0;
         scroll = 0;
+        fullscreen_f = false;
+        unfullscreen_f = false;
     }
 
     void write_png(std::string _file) {
@@ -177,7 +184,41 @@ class casp_host {
         gtk_window_set_decorated( (GtkWindow *)window, true);
         gtk_window_set_title ( (GtkWindow *)window, title);
     }
+
+    void fullscreen()  {
+        fullscreen_f = true;
+    }
+
+    void unfullscreen(){
+        unfullscreen_f = true;
+    }
+
+    void set_fullscreen_signal(){
+        if(fullscreen_f == true){
+            gtk_window_fullscreen  ( (GtkWindow *)window);
+            fullscreen_f = false;
+            return;
+        }
+        
+        if(unfullscreen_f == true){
+            gtk_window_unfullscreen( (GtkWindow *)window);
+            unfullscreen_f = false;
+            return;
+        }
+    }
+
+    void end_process() { gtk_main_quit(); }
+
+
 };
+
+
+
+
+
+
+
+
 
 static gboolean key_press_event(GtkWidget *_widget, GdkEventKey *_event,
                                 gpointer _data) {
@@ -270,5 +311,12 @@ static gboolean scroll_event(GtkWidget *_widget, GdkEventScroll *_event,
     default:
         break;
     }
+    return true;
+}
+
+static gboolean window_state_event(GtkWidget *_widget, GdkEventWindowState *_event,
+                                    gpointer _data){
+    casp_host *_host = (casp_host *)_data;
+    _host->set_fullscreen_signal();
     return true;
 }
