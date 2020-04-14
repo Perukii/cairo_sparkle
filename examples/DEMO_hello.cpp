@@ -13,8 +13,9 @@ int main(int _argc, char **_argv) {
 
     line.setup_line(0.3,
                     -7.0, 1.0,
-                    7.0 , 1.0,
                     casp_rgb_adv_autumnRed);
+
+    line.add_line(7.0 , 1.0);
     
     text.setup_text("Hello,world",-6.5, 1.0,
                     14.0, casp_auto,
