@@ -70,7 +70,5 @@ class casp_text : public casp_rect {
                       d_xywh.y + d_font * (1 - pivot.y));
         cairo_show_text(surface->cr, text.c_str());
 
-        if (stroke)
-            draw_stroke(this);
     }
 };

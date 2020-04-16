@@ -19,11 +19,20 @@ class casp_rect : public casp_object, public casp_stroke {
                     double _pivy = 0.5) {
         rect = true;
         xywh = casp_xywh<double>(_x, _y, _w, _h);
-        color_rect = _color_rect;
+        set_rect_color(_color_rect);
 
         pivot.x = _pivx;
         pivot.y = _pivy;
         set_surface();
+    }
+
+    void setup_rect_sub(casp_rgb _color_rect = casp_rgb_null){
+        rect = true;
+        set_rect_color(_color_rect);
+    }
+
+    void set_rect_color(casp_rgb _color_rect = casp_rgb_null){
+        color_rect = _color_rect;
     }
 
     void draw_rect() {

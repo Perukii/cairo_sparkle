@@ -34,7 +34,7 @@ class casp_host {
   public:
     casp_surface *surface;
     uint skey, sbutton;
-    int scroll, layer_size, def_translate_norm;
+    int scroll, layer_size, def_translate_norm, draw_time;
     std::set<uint> keys, buttons;
     casp_xy<double> mouse_pos, def_scale;
     bool fullscreen_f, unfullscreen_f;
@@ -104,7 +104,7 @@ class casp_host {
                          G_CALLBACK(window_state_event), this);
         g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
-        g_timeout_add(20, (GSourceFunc)loop_event, canvas);
+        g_timeout_add(draw_time, (GSourceFunc)loop_event, canvas);
 
         gtk_widget_set_events(
             canvas, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
@@ -132,6 +132,7 @@ class casp_host {
         scroll = 0;
         fullscreen_f = false;
         unfullscreen_f = false;
+        draw_time = 20;
     }
 
     void write_png(std::string _file) {
@@ -187,10 +188,12 @@ class casp_host {
 
     void fullscreen()  {
         fullscreen_f = true;
+        window_state_event(window, NULL, this);
     }
 
     void unfullscreen(){
         unfullscreen_f = true;
+        window_state_event(window, NULL, this);
     }
 
     void set_fullscreen_signal(){
@@ -208,7 +211,6 @@ class casp_host {
     }
 
     void end_process() { gtk_main_quit(); }
-
 
 };
 
