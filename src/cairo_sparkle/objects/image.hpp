@@ -1,11 +1,10 @@
 
-
-
 class casp_image : public casp_rect {
 
   public:
     cairo_surface_t *image;
     casp_xy<double> resolution;
+    bool xflip, yflip;
 
     ~casp_image() { cairo_surface_destroy(image); }
 
@@ -23,13 +22,26 @@ class casp_image : public casp_rect {
 
         pivot.x = _pivx;
         pivot.y = _pivy;
+
+        xflip = false;
+        yflip = false;
+
         set_surface();
     }
 
     void image_register(std::string _file) {
+
+
+        
         image = cairo_image_surface_create_from_png(_file.c_str());
+
         resolution.x = cairo_image_surface_get_width(image);
         resolution.y = cairo_image_surface_get_height(image);
+    }
+
+    void set_cairo_filter(cairo_filter_t _filter){
+        // CAIRO_FILTER_NEAREST
+        cairo_pattern_set_filter (cairo_get_source (surface->cr), _filter);
     }
 
     void draw_image() {
@@ -37,13 +49,36 @@ class casp_image : public casp_rect {
         d_xywh = surface->translate_xywh(xywh);
         d_xywh.w /= resolution.x;
         d_xywh.h /= resolution.y;
+        
+        cairo_save(surface->cr);
 
         cairo_scale(surface->cr, d_xywh.w, d_xywh.h);
+
+        cairo_matrix_t reflection_matrix; 
+        cairo_matrix_init_identity(&reflection_matrix);
+
+        if(xflip or yflip){
+            reflection_matrix.xx = -1.0 * xflip;
+            reflection_matrix.yy = -1.0 * yflip;
+            cairo_transform(surface->cr, &reflection_matrix);
+            d_xywh.x *=  -1.0 * xflip;
+            d_xywh.y *=  -1.0 * yflip;
+        }
+
+
         cairo_set_source_surface(surface->cr, image,
                                  d_xywh.x / d_xywh.w - resolution.x * pivot.x,
                                  d_xywh.y / d_xywh.h - resolution.y * pivot.y);
+        set_cairo_filter(casp_def_image_filter);
+
         cairo_scale(surface->cr, 1 / d_xywh.w, 1 / d_xywh.h);
+        
         cairo_paint(surface->cr);
+
+
+        cairo_restore(surface->cr);
+
+        
         if (rect)
             draw_rect();
         if (stroke)
