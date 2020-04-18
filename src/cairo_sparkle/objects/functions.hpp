@@ -53,3 +53,32 @@ void casp_func_quadra(casp_rgb &_targ, casp_rgb _goal, double _weigh) {
     casp_func_quadra(_targ.b, _goal.b, _weigh);
     casp_func_quadra(_targ.a, _goal.a, _weigh);
 }
+
+bool casp_func_point_on_rect(casp_xy<double> _xy, casp_xywh<double> _xywh,
+                                casp_xy<double> _pivot = casp_xy<double>(0.5, 0.5)) {
+    return (_xy.x >= _xywh.x -_xywh.w * _pivot.x  and
+            _xy.x <= _xywh.x +_xywh.w * (1.0 - _pivot.x) ) and
+           (_xy.y >= _xywh.y -_xywh.h * _pivot.y  and
+            _xy.y <= _xywh.y +_xywh.h * (1.0 - _pivot.y) );
+}
+
+uint casp_func_rect_on_rect(casp_xywh<double> _xywha, casp_xywh<double> _xywhb,
+                            casp_xy<double> _pivota = casp_xy<double>(0.5, 0.5),
+                            casp_xy<double> _pivotb = casp_xy<double>(0.5, 0.5)) {
+    return casp_func_point_on_rect(
+                casp_xy<double>(_xywha.x -_xywha.w * _pivota.x, 
+                                _xywha.y -_xywha.h * _pivota.y)
+                , _xywhb, _pivotb)
+         + casp_func_point_on_rect(
+                casp_xy<double>(_xywha.x +_xywha.w * (1.0 - _pivota.x), 
+                                _xywha.y -_xywha.h * _pivota.y)
+                , _xywhb, _pivotb)
+         + casp_func_point_on_rect(
+                casp_xy<double>(_xywha.x +_xywha.w * (1.0 - _pivota.x), 
+                                _xywha.y +_xywha.h * (1.0 - _pivota.y))
+                , _xywhb, _pivotb)
+         + casp_func_point_on_rect(
+                casp_xy<double>(_xywha.x -_xywha.w * _pivota.x, 
+                                _xywha.y +_xywha.h * (1.0 - _pivota.y))
+                , _xywhb, _pivotb);
+}
