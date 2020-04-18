@@ -30,9 +30,6 @@ class casp_image : public casp_rect {
     }
 
     void image_register(std::string _file) {
-
-
-        
         image = cairo_image_surface_create_from_png(_file.c_str());
 
         resolution.x = cairo_image_surface_get_width(image);
@@ -54,15 +51,19 @@ class casp_image : public casp_rect {
 
         cairo_scale(surface->cr, d_xywh.w, d_xywh.h);
 
-        cairo_matrix_t reflection_matrix; 
-        cairo_matrix_init_identity(&reflection_matrix);
-
         if(xflip or yflip){
-            reflection_matrix.xx = -1.0 * xflip;
-            reflection_matrix.yy = -1.0 * yflip;
+            cairo_matrix_t reflection_matrix; 
+            cairo_matrix_init_identity(&reflection_matrix);
+            if(xflip){
+                reflection_matrix.xx = -1.0;
+                d_xywh.x *= -1.0;
+            }
+            if(yflip){
+                reflection_matrix.yy = -1.0;
+                d_xywh.y *= -1.0;
+            }
+
             cairo_transform(surface->cr, &reflection_matrix);
-            d_xywh.x *=  -1.0 * xflip;
-            d_xywh.y *=  -1.0 * yflip;
         }
 
 
