@@ -22,11 +22,64 @@ static gboolean scroll_event(GtkWidget *, GdkEventScroll *, gpointer);
 static gboolean window_state_event(GtkWidget *, GdkEventWindowState *, gpointer);
 
 
+static gboolean loop_event(GtkWidget *);
+
+class c_host {
+private:
+    GtkWidget *window;
+    GtkWidget *canvas;
+    uint layer_size;
+    
+public:
+
+    c_surface *surface;
+
+    void setup_host(casp_xy<int>);
+    void run();
+    void set_surface(uint);
+
+};
+
+void c_host::setup_host(casp_xy<int> _resolution){
+
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    canvas = gtk_drawing_area_new();
+
+    gtk_widget_set_app_paintable(canvas, true);
+    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+    gtk_window_set_decorated( (GtkWindow *)window, false);
+    gtk_window_set_default_size((GtkWindow *)window, _resolution.x,
+                                        _resolution.y);
+
+    g_timeout_add(1, (GSourceFunc)loop_event, canvas);
+    gtk_container_add(GTK_CONTAINER(window), canvas);
+
+    set_surface(1);
+}
+
+void c_host::run() {
+    gtk_widget_show_all(window);
+    gtk_main();
+}
+
+void c_host::set_surface(uint _layer_size){
+    layer_size = _layer_size;
+    surface = new c_surface[layer_size];
+}
+
+
+
 static gboolean loop_event(GtkWidget *widget) {
-    casp_main();
+    c_main();
     gtk_widget_queue_draw(widget);
     return true;
 }
+
+
+/*
+
+
+
 
 class casp_host {
 
@@ -224,3 +277,5 @@ class casp_host {
     void end_process() { gtk_main_quit(); }
 
 };
+
+*/

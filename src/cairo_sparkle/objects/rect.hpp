@@ -20,9 +20,7 @@ public:
 
 };
 
-template<class... Args> c_rect::c_rect(Args... args){
-    setup_rect(args...);
-}
+template<class... Args> c_rect::c_rect(Args... args){ setup_rect(args...); }
 
 void c_rect::setup_rect
     (casp_xywh<double> _xywh = {0.0, 0.0, 0.0, 0.0},
@@ -42,7 +40,7 @@ void c_rect::disable_rect() { rect_enable = false; }
 
 void c_rect::draw_rect() {
 
-    casp_xywh<double> d_xywh = surface->translate_xywh(xywh);
+    casp_xywh<double> d_xywh = surface->transform_xywh(xywh);
     
     cairo_rectangle(surface->cr,
                     d_xywh.x - d_xywh.w * (draw_pivot.x + 1.0) * 0.5,
@@ -56,7 +54,9 @@ void c_rect::draw_rect() {
     
 }
 
-// ==== //
+
+
+/*
 
 class casp_rect : public casp_object, public casp_stroke {
   public:
@@ -119,5 +119,7 @@ class casp_rect : public casp_object, public casp_stroke {
 
     
 };
+
+*/
 
 
