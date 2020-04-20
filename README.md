@@ -44,6 +44,8 @@ Ubuntu19.10 での構築例。
 
 (Cairoはgtkmmに組み込まれているので別途インストールする必要はありません。)
 
+・SDL_mixerをインストール
+
 ・CaSpのcloneをダウンロード
 
 #### 実行
@@ -55,13 +57,13 @@ g++、demo/DEMO.cppでの実行例
 (clang++にも対応しています。)
 
 ```
-g++ -o [生成する実行ファイル] [コンパイルするcppファイル] $(pkg-config --cflags --libs gtkmm-3.0) {PATHを通さない場合}(-I [cairo_sparkleのディレクトリ]) -l png
+g++ -o [生成する実行ファイル] [コンパイルするcppファイル] $(pkg-config --cflags --libs gtkmm-3.0) {PATHを通さない場合}(-I [cairo_sparkleのディレクトリ]) -lpng -lSDL2 -lSDL2_mixer -std=c++17
 ```
 
 
 demo/DEMO_blockout.cpp
 ```
-g++ -o DEMO demo/DEMO_blockout.cpp $(pkg-config --cflags --libs gtkmm-3.0) -I /home/user/hoge/huga/cairo_sparkle -l png
+g++ -o DEMO demo/DEMO_blockout.cpp $(pkg-config --cflags --libs gtkmm-3.0) -lpng -lSDL2 -lSDL2_mixer -std=c++17
 ```
 
 ___
