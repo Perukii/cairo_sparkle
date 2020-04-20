@@ -25,6 +25,7 @@ void casp_draw();
 #include "objects/surface.hpp"
 
 casp_surface *casp_default_surface_target = NULL;
+cairo_filter_t casp_def_image_filter = CAIRO_FILTER_GOOD;
 
 void casp_default_surface(casp_surface *_surface) {
     casp_default_surface_target = _surface;

@@ -82,4 +82,8 @@ class casp_surface {
                (translate_norm == casp_translate_norm_w ? scale.x : scale.y) /
                range * zoom;
     }
+
+    casp_xywh<double> for_xywh(){
+        return casp_xywh<double>(xy, scale_range);
+    }
 };

@@ -59,6 +59,13 @@ template <class MAIN> class casp_xywh : public casp_xy<MAIN> {
         h = _h;
     }
 
+    casp_xywh(casp_xy<MAIN> _xy, casp_xy<MAIN> _wh) {
+        this->x = _xy.x;
+        this->y = _xy.y;
+        w = _wh.x;
+        h = _wh.y;
+    }
+
     casp_xywh operator+(casp_xywh _p) {
         return casp_xywh(this->x + _p.x, this->y + _p.y, w + _p.w, h + _p.h);
     }
