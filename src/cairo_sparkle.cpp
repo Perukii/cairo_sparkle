@@ -1,7 +1,7 @@
 
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+//#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #pragma once
-#include <gtkmm.h>
+#include <gtk/gtk.h>
 #include <SDL2/SDL_mixer.h>
 
 #include <iostream>
