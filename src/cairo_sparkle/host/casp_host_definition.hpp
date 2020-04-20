@@ -1,11 +1,9 @@
 
-
+static gboolean draw_event(GtkWidget *, cairo_t *, gpointer);
 
 static gboolean key_press_event(GtkWidget *, GdkEventKey *, gpointer);
 
 static gboolean key_release_event(GtkWidget *, GdkEventKey *, gpointer);
-
-static gboolean draw_event(GtkWidget *, cairo_t *, gpointer);
 
 static gboolean window_resize_event(GtkWidget *, GdkRectangle *, gpointer);
 
@@ -28,15 +26,18 @@ class c_host {
 private:
     GtkWidget *window;
     GtkWidget *canvas;
-    uint layer_size;
-    
+        
 public:
 
     c_surface *surface;
+    casp_xy<int> resolution;
+    uint layer_size;
+    
 
     void setup_host(casp_xy<int>);
     void run();
     void set_surface(uint);
+    void window_scale(casp_xy<int>);
 
 };
 
@@ -48,13 +49,19 @@ void c_host::setup_host(casp_xy<int> _resolution){
     gtk_widget_set_app_paintable(canvas, true);
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_window_set_decorated( (GtkWindow *)window, false);
-    gtk_window_set_default_size((GtkWindow *)window, _resolution.x,
-                                        _resolution.y);
+
+    g_signal_connect(window, "draw",
+                         G_CALLBACK(draw_event), this);
 
     g_timeout_add(1, (GSourceFunc)loop_event, canvas);
     gtk_container_add(GTK_CONTAINER(window), canvas);
 
+    resolution = _resolution;
+
     set_surface(1);
+    c_default_surface(&surface[0]);
+
+    window_scale(_resolution);
 }
 
 void c_host::run() {
@@ -67,11 +74,32 @@ void c_host::set_surface(uint _layer_size){
     surface = new c_surface[layer_size];
 }
 
+void c_host::window_scale(casp_xy<int> _resolution){
+
+    for(int i=0;i<layer_size;i++){
+        surface[i].resolution = resolution;
+    }
+
+    gtk_window_set_default_size((GtkWindow *)window, _resolution.x,
+                                        _resolution.y);
+}
 
 
 static gboolean loop_event(GtkWidget *widget) {
     c_main();
     gtk_widget_queue_draw(widget);
+    return true;
+}
+
+static gboolean draw_event
+    (GtkWidget *_widget, cairo_t *_cr, gpointer _data) {
+
+    c_host *_host = (c_host *)_data;
+    for(int i=0;i<_host->layer_size;i++){
+        _host->surface[i].cr = _cr;
+    }
+
+    c_draw();
     return true;
 }
 
