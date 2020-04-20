@@ -1,9 +1,4 @@
 
-static gboolean draw_event(GtkWidget *, cairo_t *, gpointer);
-
-static gboolean key_press_event(GtkWidget *, GdkEventKey *, gpointer);
-
-static gboolean key_release_event(GtkWidget *, GdkEventKey *, gpointer);
 
 static gboolean window_resize_event(GtkWidget *, GdkRectangle *, gpointer);
 
@@ -20,24 +15,45 @@ static gboolean scroll_event(GtkWidget *, GdkEventScroll *, gpointer);
 static gboolean window_state_event(GtkWidget *, GdkEventWindowState *, gpointer);
 
 
-static gboolean loop_event(GtkWidget *);
+
 
 class c_host {
 private:
     GtkWidget *window;
     GtkWidget *canvas;
-        
-public:
-
     c_surface *surface;
-    casp_xy<int> resolution;
     uint layer_size;
-    
+      
+    casp_xy<int> resolution;
+
+    static gboolean draw_event(GtkWidget *, cairo_t *, gpointer);
+    static gboolean loop_event(GtkWidget *);
+
+public: 
 
     void setup_host(casp_xy<int>);
     void run();
     void set_surface(uint);
     void window_scale(casp_xy<int>);
+
+    #ifdef c_permission_key_events
+    private:
+        std::set<uint> keys;
+        uint key_sig;
+        static gboolean key_press_event(GtkWidget *, GdkEventKey *, gpointer);
+        static gboolean key_release_event(GtkWidget *, GdkEventKey *, gpointer);
+    public:
+        bool get_key_retain(int);
+        bool get_key_press (int);
+
+        #ifdef c_permission_debug
+        public:
+            void debug_key();
+        #endif
+        
+    #endif
+
+
 
 };
 
@@ -51,7 +67,14 @@ void c_host::setup_host(casp_xy<int> _resolution){
     gtk_window_set_decorated( (GtkWindow *)window, false);
 
     g_signal_connect(window, "draw",
-                         G_CALLBACK(draw_event), this);
+                        G_CALLBACK(draw_event), this);
+
+#ifdef c_permission_key_events
+    g_signal_connect(window, "key_press_event",
+                        G_CALLBACK(key_press_event),this);
+    g_signal_connect(window, "key_release_event",
+                        G_CALLBACK(key_release_event), this);
+#endif
 
     g_timeout_add(1, (GSourceFunc)loop_event, canvas);
     gtk_container_add(GTK_CONTAINER(window), canvas);
@@ -85,13 +108,27 @@ void c_host::window_scale(casp_xy<int> _resolution){
 }
 
 
-static gboolean loop_event(GtkWidget *widget) {
+
+
+
+
+
+
+
+
+
+
+
+
+//signals
+
+gboolean c_host::loop_event(GtkWidget *widget) {
     c_main();
     gtk_widget_queue_draw(widget);
     return true;
 }
 
-static gboolean draw_event
+gboolean c_host::draw_event
     (GtkWidget *_widget, cairo_t *_cr, gpointer _data) {
 
     c_host *_host = (c_host *)_data;
@@ -102,6 +139,7 @@ static gboolean draw_event
     c_draw();
     return true;
 }
+
 
 
 /*
