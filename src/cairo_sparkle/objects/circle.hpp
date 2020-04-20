@@ -5,7 +5,7 @@ public:
     double rx, ry, d_rx, d_ry;
     casp_rgb color_circle;
     bool circle = false;
-    
+
     void setup_circle(double _x = 0, double _y = 0, double _r = 0,
                     casp_rgb _color_circle = casp_rgb_null){
 

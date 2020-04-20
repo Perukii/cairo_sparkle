@@ -42,4 +42,3 @@ void casp_default_surface(casp_surface *_surface) {
 #include "objects/circle.hpp"
 
 #include "host/casp_host.hpp"
-#include "host/casp_host_debug.hpp"
