@@ -1,5 +1,8 @@
 
 
+class c_surface{
+}
+
 class casp_surface {
 
   public:

@@ -1,13 +1,13 @@
 
 
-class c_rect : public casp_object {
+class c_rect : public c_object {
 private:
-    casp_xywh<double> xywh;
-    casp_xy<double> draw_pivot;
-    casp_rgb color_rect;
     bool rect_enable;
 
 public:
+    casp_xywh<double> xywh;
+    casp_xy<double> draw_pivot;
+    casp_rgb color_rect;
 
     template<class... Args> c_rect(Args...);
 
