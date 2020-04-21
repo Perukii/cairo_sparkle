@@ -8,6 +8,7 @@ gboolean c_host::loop_event(GtkWidget *widget) {
 gboolean c_host::draw_event(GtkWidget *_widget, cairo_t *_cr, gpointer _data) {
 
     c_host *_host = (c_host *)_data;
+
     for(int i=0;i<_host->layer_size;i++){
         _host->surface[i].cr = _cr;
     }
@@ -16,6 +17,10 @@ gboolean c_host::draw_event(GtkWidget *_widget, cairo_t *_cr, gpointer _data) {
         _host->surface[0].draw_background(_host->background_color);
 
     c_draw();
+
+    _host->reset_value();
+    
+
     return true;
 }
 

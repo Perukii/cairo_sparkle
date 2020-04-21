@@ -14,6 +14,7 @@ private:
     static gboolean loop_event(GtkWidget *);
     static gboolean window_resize_event(GtkWidget *, GdkRectangle *, gpointer);
     static gboolean window_state_event(GtkWidget *, GdkEventWindowState *, gpointer);
+    
 
 public: 
 
@@ -26,6 +27,9 @@ public:
     void set_fullscreen(bool);
     void fullscreen_signal();
     void quit();
+    void reset_value();
+    
+
 
     // === Key Events ===
 
@@ -82,6 +86,13 @@ public:
 
     #endif
 
+    #ifdef c_output_png
+    private:
+        cairo_surface_t *image;
+    public:
+        void write_png(const char * _file);
+    #endif
+
 };
 
 
@@ -136,6 +147,7 @@ void c_host::setup_host(casp_xy<int> _resolution){
     #endif
 
     g_timeout_add(1, (GSourceFunc)loop_event, canvas);
+    
     gtk_container_add(GTK_CONTAINER(window), canvas);
 
     resolution = _resolution;
@@ -184,22 +196,13 @@ void c_host::quit(){
     gtk_main_quit();
 }
 
+void c_host::reset_value(){
+    #ifdef c_permission_key_events
+        key_sig = 0;
+    #endif
 
-/*
-    cairo_surface_t *image;
-
-    void write_png(std::string _file) {
-        image = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
-                                           surface->scale.x, surface->scale.y);
-
-        for(int i=0;i<layer_size;i++){
-            surface[i].cr = cairo_create(image);
-        }
-        
-        casp_draw();
-
-        cairo_surface_flush(image);
-        cairo_surface_write_to_png(image, _file.c_str());
-        std::cout << "Wrote : " << _file << std::endl;
-    }
-*/
+    #ifdef c_permission_mouse_button_events
+        button_sig = 0;
+        scroll = 0;
+    #endif
+}
