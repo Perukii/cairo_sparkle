@@ -1,5 +1,5 @@
-
-struct casp_audio{
+/*
+struct c_audio{
 
     Mix_Music *music;
     void setup_audio(){
@@ -16,8 +16,9 @@ struct casp_audio{
         Mix_PauseMusic();
     } 
 
-    ~casp_audio(){
+    ~c_audio(){
         Mix_FreeMusic(music);
     }
 
 };
+*/
