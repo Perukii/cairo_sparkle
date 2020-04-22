@@ -1,18 +1,20 @@
 
-
 class c_surface{
-protected:
-    
+
+private:
     bool transform_basis = c_transform_basis_w;
 
 public:
 
     casp_xywh<double> xywh;
     casp_xy<double> resolution;
+    
     double scale = 20.0;
     cairo_t *cr;
 
     template<class... Args> c_surface(Args...);
+
+    ~c_surface();
 
     void setup_surface(casp_xy<double>, casp_xy<double>);
 
@@ -34,7 +36,12 @@ public:
 
 };
 
+
 template<class... Args> c_surface::c_surface(Args... args){ setup_surface(args...); }
+
+c_surface::~c_surface(){
+    cairo_destroy(cr);
+}
 
 void c_surface::setup_surface
         (casp_xy<double> _xy = {0,0},

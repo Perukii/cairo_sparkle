@@ -190,7 +190,9 @@ int main(int _argc, char **_argv) {
 
     casp_init(_argc, _argv);
     host.setup_host(500, 700, casp_translate_norm_h);
-    host.set_titlebar("TEST");
+    host.set_titlebar("Blockout!");
     setup_game();
+    host.audio.setup_audio();
+    host.audio.play_music("yuruyakanakaze.mp3", 1);
     host.run();
 }

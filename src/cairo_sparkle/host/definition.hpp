@@ -4,11 +4,13 @@ private:
     GtkWidget *window;
     GtkWidget *canvas;
     c_surface *surface;
+    
     casp_rgb background_color;
     uint layer_size;
     bool fullscreen = false;
-      
+    
     casp_xy<int> resolution;
+    
 
     static gboolean draw_event(GtkWidget *, cairo_t *, gpointer);
     static gboolean loop_event(GtkWidget *);
@@ -18,9 +20,12 @@ private:
 
 public: 
 
+    void(*main_loop)();
+
     void setup_host(casp_xy<int>);
-    void run();
-    void set_surface(uint);
+    void run(void(*)());
+    void set_layer(uint);
+    void switch_layer(uint);
     void window_scale(casp_xy<int>);
     void set_titlebar(const char *);
     void set_background(casp_rgb);
@@ -29,8 +34,6 @@ public:
     void quit();
     void reset_value();
     
-
-
     // === Key Events ===
 
     #ifdef c_permission_key_events
@@ -88,16 +91,16 @@ public:
 
     #ifdef c_output_png
     private:
-        cairo_surface_t *image;
+        bool output_mode;
     public:
         void write_png(const char * _file);
     #endif
 
 };
 
+void c_host::setup_host(casp_xy<int> _resolution = {500, 500}){
 
-
-void c_host::setup_host(casp_xy<int> _resolution){
+    gtk_init(NULL, NULL);
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     canvas = gtk_drawing_area_new();
@@ -151,21 +154,25 @@ void c_host::setup_host(casp_xy<int> _resolution){
     gtk_container_add(GTK_CONTAINER(window), canvas);
 
     resolution = _resolution;
-
-    set_surface(1);
-    c_default_surface(&surface[0]);
+    set_layer(1);
+    switch_layer(0);
 
     window_scale(_resolution);
 }
 
-void c_host::run() {
+void c_host::run(void (*_main_loop )()) {
+    main_loop = _main_loop;
     gtk_widget_show_all(window);
     gtk_main();
 }
 
-void c_host::set_surface(uint _layer_size){
+void c_host::set_layer(uint _layer_size){
     layer_size = _layer_size;
     surface = new c_surface[layer_size];
+}
+
+void c_host::switch_layer(uint _layer){
+    c_default_surface(&surface[_layer]);
 }
 
 void c_host::window_scale(casp_xy<int> _resolution){

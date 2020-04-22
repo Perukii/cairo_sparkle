@@ -1,6 +1,5 @@
 
 gboolean c_host::loop_event(GtkWidget *widget) {
-    c_main();
     gtk_widget_queue_draw(widget);
     return true;
 }
@@ -16,12 +15,11 @@ gboolean c_host::draw_event(GtkWidget *_widget, cairo_t *_cr, gpointer _data) {
     if(_host->background_color != casp_rgb_null)
         _host->surface[0].draw_background(_host->background_color);
 
-    c_draw();
+    _host->main_loop();
 
     _host->reset_value();
-    
 
-    return true;
+    return true;//_host->output_mode == false;
 }
 
 gboolean c_host::window_resize_event(GtkWidget *_widget,

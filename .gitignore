@@ -2,6 +2,7 @@
 test
 test.cpp
 desktop.cpp
+desktop
 DEMO
 build
 
@@ -10,5 +11,6 @@ build
 .vscode
 .git
 
+*.mp3
 *.png
 *.sh
