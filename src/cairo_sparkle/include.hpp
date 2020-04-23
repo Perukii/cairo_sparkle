@@ -20,6 +20,4 @@
 #include "fundament/fundamental_math.hpp"
 #include "objects/objects.hpp"
 
-
-
 #include "host/casp_host.hpp"

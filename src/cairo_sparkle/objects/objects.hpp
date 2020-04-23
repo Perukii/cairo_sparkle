@@ -13,8 +13,11 @@ void c_default_surface(c_surface *_surface){
 
 #include "functions.hpp"
 #include "object.hpp"
-#include "rect.hpp"
+
 #include "line.hpp"
+#include "rect.hpp"
+#include "subrect.hpp"
+#include "image.hpp"
 
 
 

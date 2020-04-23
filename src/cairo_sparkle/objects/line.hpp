@@ -3,6 +3,7 @@ class c_line : public c_object {
 private:
     class c_line_path;
     class c_line_property;
+    bool path_is_closed;
 
 public:
 
@@ -42,6 +43,8 @@ void c_line::setup_line(casp_xy<double> _xy, double _w = 0,
                     casp_rgb _color_line = casp_rgb_null){
     path.clear();
     property.clear();
+
+    path_is_closed = false;
     
     switch_property(_w, _color_line);
     set_path(_xy);
@@ -74,6 +77,8 @@ void c_line::switch_property(double _w, casp_rgb _color_line){
 
 void c_line::set_path(casp_xy<double> _xy){
 
+    if(path_is_closed)return;
+
     c_line_path tar;
     tar.xy = casp_xy<double>(_xy);
     tar.property = property.size()-1;
@@ -84,11 +89,16 @@ void c_line::set_path(casp_xy<double> _xy){
 
 void c_line::close_path(){
     set_path(path[0].xy);
+    path_is_closed = true;
 }
 
 void c_line::draw_line(){
 
     if(surface == NULL) return;
+
+    if(path_is_closed);
+        path[path.size()-1].xy = path[0].xy;
+    
 
     c_line_path d_path, d_b_path;
 
