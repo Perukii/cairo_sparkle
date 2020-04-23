@@ -1,5 +1,5 @@
 
-class c_subrect : public c_rect {
+class casp_subrect : public casp_rect {
 public:
     void setup_fill_color(casp_rgb);
 
@@ -7,7 +7,7 @@ public:
     void disable_fill_color();
 };
 
-void c_subrect::setup_fill_color(casp_rgb _color_rect = casp_rgb_null){
+void casp_subrect::setup_fill_color(casp_rgb _color_rect = casp_rgb_null){
 
     enable_rect();
     color_rect = _color_rect; 
@@ -15,5 +15,5 @@ void c_subrect::setup_fill_color(casp_rgb _color_rect = casp_rgb_null){
     
 }
 
-void c_subrect::enable_fill_color() { enable_rect(); };
-void c_subrect::disable_fill_color() { disable_rect(); };
+void casp_subrect::enable_fill_color() { enable_rect(); };
+void casp_subrect::disable_fill_color() { disable_rect(); };

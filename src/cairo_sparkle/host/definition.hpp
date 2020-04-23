@@ -1,9 +1,9 @@
 
-class c_host {
+class casp_host {
 private:
     GtkWidget *window;
     GtkWidget *canvas;
-    c_surface *surface;
+    casp_surface *surface;
     
     casp_rgb background_color;
     uint layer_size;
@@ -36,7 +36,7 @@ public:
     
     // === Key Events ===
 
-    #ifdef c_permission_key_events
+    #ifdef casp_permission_key_events
 
     private:
         std::set<uint> keys;
@@ -48,7 +48,7 @@ public:
         bool get_key_retain(int);
         bool get_key_press (int);
 
-        #ifdef c_permission_debug
+        #ifdef casp_permission_debug
 
         public:
             void debug_key();
@@ -58,7 +58,7 @@ public:
 
     #endif
 
-    #ifdef c_permission_mouse_button_events
+    #ifdef casp_permission_mouse_button_events
 
     private:
         std::set<uint> buttons;
@@ -72,7 +72,7 @@ public:
         bool get_mouse_button_retain(int);
         bool get_mouse_button_press (int);
 
-        #ifdef c_permission_debug
+        #ifdef casp_permission_debug
 
         public:
             void debug_mouse_button();
@@ -81,7 +81,7 @@ public:
 
     #endif
 
-    #ifdef c_permission_mouse_notify_events
+    #ifdef casp_permission_mouse_notify_events
     private:
         static gboolean motion_notify_event(GtkWidget *, GdkEventMotion *, gpointer);
     public:
@@ -89,7 +89,7 @@ public:
 
     #endif
 
-    #ifdef c_output_png
+    #ifdef casp_output_png
     private:
         bool output_mode;
     public:
@@ -98,7 +98,7 @@ public:
 
 };
 
-void c_host::setup_host(casp_xy<int> _resolution = {500, 500}){
+void casp_host::setup_host(casp_xy<int> _resolution = {500, 500}){
 
     gtk_init(NULL, NULL);
 
@@ -118,7 +118,7 @@ void c_host::setup_host(casp_xy<int> _resolution = {500, 500}){
     g_signal_connect(window, "destroy",
                         G_CALLBACK(gtk_main_quit), NULL);
 
-    #ifdef c_permission_key_events
+    #ifdef casp_permission_key_events
 
         g_signal_connect(window, "key_press_event",
                         G_CALLBACK(key_press_event),this);
@@ -127,7 +127,7 @@ void c_host::setup_host(casp_xy<int> _resolution = {500, 500}){
 
     #endif
 
-    #ifdef c_permission_mouse_button_events
+    #ifdef casp_permission_mouse_button_events
 
         g_signal_connect(window, "button_press_event",
                         G_CALLBACK(mouse_button_press_event), this);
@@ -141,7 +141,7 @@ void c_host::setup_host(casp_xy<int> _resolution = {500, 500}){
         
     #endif
 
-    #ifdef c_permission_mouse_notify_events
+    #ifdef casp_permission_mouse_notify_events
 
         g_signal_connect(window, "motion_notify_event",
                         G_CALLBACK(motion_notify_event), this);
@@ -160,22 +160,22 @@ void c_host::setup_host(casp_xy<int> _resolution = {500, 500}){
     window_scale(_resolution);
 }
 
-void c_host::run(void (*_main_loop )()) {
+void casp_host::run(void (*_main_loop )()) {
     main_loop = _main_loop;
     gtk_widget_show_all(window);
     gtk_main();
 }
 
-void c_host::set_layer(uint _layer_size){
+void casp_host::set_layer(uint _layer_size){
     layer_size = _layer_size;
-    surface = new c_surface[layer_size];
+    surface = new casp_surface[layer_size];
 }
 
-void c_host::switch_layer(uint _layer){
-    c_default_surface(&surface[_layer]);
+void casp_host::switch_layer(uint _layer){
+    casp_default_surface(&surface[_layer]);
 }
 
-void c_host::window_scale(casp_xy<int> _resolution){
+void casp_host::window_scale(casp_xy<int> _resolution){
 
     for(int i=0;i<layer_size;i++){
         surface[i].resolution = _resolution;
@@ -185,30 +185,30 @@ void c_host::window_scale(casp_xy<int> _resolution){
     gtk_window_set_default_size((GtkWindow *)window, _resolution.x, _resolution.y);
 }
 
-void c_host::set_titlebar(const char * _title){
+void casp_host::set_titlebar(const char * _title){
     gtk_window_set_decorated( (GtkWindow *)window, true);
     gtk_window_set_title ( (GtkWindow *)window, _title);
 }
 
-void c_host::set_background(casp_rgb _background_color){
+void casp_host::set_background(casp_rgb _background_color){
     background_color = _background_color;
 }
 
-void c_host::set_fullscreen(bool _flag){
+void casp_host::set_fullscreen(bool _flag){
     fullscreen = true;
     window_state_event(window, NULL, this);
 }
 
-void c_host::quit(){
+void casp_host::quit(){
     gtk_main_quit();
 }
 
-void c_host::reset_value(){
-    #ifdef c_permission_key_events
+void casp_host::reset_value(){
+    #ifdef casp_permission_key_events
         key_sig = 0;
     #endif
 
-    #ifdef c_permission_mouse_button_events
+    #ifdef casp_permission_mouse_button_events
         button_sig = 0;
         scroll = 0;
     #endif

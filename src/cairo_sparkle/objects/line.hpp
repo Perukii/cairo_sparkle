@@ -1,14 +1,14 @@
 
-class c_line : public c_object {
+class casp_line : public casp_object {
 private:
-    class c_line_path;
-    class c_line_property;
+    class casp_line_path;
+    class casp_line_property;
     bool path_is_closed;
 
 public:
 
-    std::vector<c_line_path> path;
-    std::vector<c_line_property> property;
+    std::vector<casp_line_path> path;
+    std::vector<casp_line_property> property;
 
     void setup_line(casp_xy<double>, double, casp_rgb);
     void add_line(casp_xy<double>);
@@ -22,24 +22,24 @@ private:
     void set_path(casp_xy<double>);
 };
 
-class c_line::c_line_path {
+class casp_line::casp_line_path {
 public:
     casp_xy<double> xy;
     uint property;
 };
 
-class c_line::c_line_property {
+class casp_line::casp_line_property {
 public:
     double w;
     casp_rgb color_line;
 
-    void activate(c_surface * _surface){
+    void activate(casp_surface * _surface){
         cairo_set_line_width(_surface->cr, _surface->transform_w(w));
         _surface->set_color(color_line);
     }
 };
 
-void c_line::setup_line(casp_xy<double> _xy, double _w = 0,
+void casp_line::setup_line(casp_xy<double> _xy, double _w = 0,
                     casp_rgb _color_line = casp_rgb_null){
     path.clear();
     property.clear();
@@ -52,22 +52,22 @@ void c_line::setup_line(casp_xy<double> _xy, double _w = 0,
     set_surface();
 }
 
-void c_line::add_line(casp_xy<double> _xy){
+void casp_line::add_line(casp_xy<double> _xy){
     set_path(_xy);
 }
 
 
-void c_line::switch_width(double _w){
+void casp_line::switch_width(double _w){
     switch_property(_w, property.back().color_line);
 }
 
-void c_line::switch_color(casp_rgb _color_line){
+void casp_line::switch_color(casp_rgb _color_line){
     switch_property(property.back().w, _color_line);
 }
 
-void c_line::switch_property(double _w, casp_rgb _color_line){
+void casp_line::switch_property(double _w, casp_rgb _color_line){
 
-    c_line_property tar;
+    casp_line_property tar;
     tar.w = _w;
     tar.color_line = _color_line;
 
@@ -75,11 +75,11 @@ void c_line::switch_property(double _w, casp_rgb _color_line){
 
 }
 
-void c_line::set_path(casp_xy<double> _xy){
+void casp_line::set_path(casp_xy<double> _xy){
 
     if(path_is_closed)return;
 
-    c_line_path tar;
+    casp_line_path tar;
     tar.xy = casp_xy<double>(_xy);
     tar.property = property.size()-1;
 
@@ -87,12 +87,12 @@ void c_line::set_path(casp_xy<double> _xy){
 
 }
 
-void c_line::close_path(){
+void casp_line::close_path(){
     set_path(path[0].xy);
     path_is_closed = true;
 }
 
-void c_line::draw_line(){
+void casp_line::draw_line(){
 
     if(surface == NULL) return;
 
@@ -100,7 +100,7 @@ void c_line::draw_line(){
         path[path.size()-1].xy = path[0].xy;
     
 
-    c_line_path d_path, d_b_path;
+    casp_line_path d_path, d_b_path;
 
     for(int i = 0; i<path.size(); i++){
 

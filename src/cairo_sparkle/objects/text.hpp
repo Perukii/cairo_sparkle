@@ -1,4 +1,4 @@
-
+/*
 
 class casp_text : public casp_rect {
   public:
@@ -72,3 +72,5 @@ class casp_text : public casp_rect {
 
     }
 };
+
+*/

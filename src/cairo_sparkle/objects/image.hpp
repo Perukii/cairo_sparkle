@@ -1,5 +1,5 @@
 
-class c_image : public c_subrect {
+class casp_image : public casp_subrect {
 private:
     cairo_surface_t *image;
     casp_xy<double> resolution;
@@ -9,7 +9,7 @@ private:
 
 public:
 
-    ~c_image();
+    ~casp_image();
 
     void setup_image(const char *, casp_xywh<double>, casp_xy<double>);
     void image_register(const char *);
@@ -26,9 +26,9 @@ public:
 };
 
 
-c_image::~c_image() { cairo_surface_destroy(image); }
+casp_image::~casp_image() { cairo_surface_destroy(image); }
 
-void c_image::setup_image(const char * _file = "",
+void casp_image::setup_image(const char * _file = "",
                 casp_xywh<double> _xywh = {0.0, 0.0, 0.0, 0.0},
                 casp_xy<double> _draw_pivot = {0.0, 0.0}) {
 
@@ -41,36 +41,36 @@ void c_image::setup_image(const char * _file = "",
     draw_pivot = _draw_pivot;
 
     set_surface();
-    set_cairo_filter(c_def_image_filter);
+    set_cairo_filter(casp_def_image_filter);
     set_alpha(1.0);
 }
 
-void c_image::image_register(const char * _file) {
+void casp_image::image_register(const char * _file) {
     image = cairo_image_surface_create_from_png(_file);
 
     resolution.x = cairo_image_surface_get_width(image);
     resolution.y = cairo_image_surface_get_height(image);
 }
 
-void c_image::enable_image(){
+void casp_image::enable_image(){
     image_enable = true;
 }
-void c_image::disable_image(){
+void casp_image::disable_image(){
     image_enable = false;
 }
 
-void c_image::set_alpha(double _alpha){
+void casp_image::set_alpha(double _alpha){
     alpha = _alpha;
 }
-double c_image::get_alpha(){
+double casp_image::get_alpha(){
     return alpha;
 }
 
-void c_image::set_cairo_filter(cairo_filter_t _filter){
+void casp_image::set_cairo_filter(cairo_filter_t _filter){
     filter = _filter;
 }
 
-void c_image::draw_image() {
+void casp_image::draw_image() {
 
     casp_xywh<double> d_b_xywh;
 

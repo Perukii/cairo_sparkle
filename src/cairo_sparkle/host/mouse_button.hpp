@@ -2,9 +2,9 @@
 
 // === signals ===
 
-gboolean c_host::mouse_button_press_event(GtkWidget *_widget, GdkEventButton *_event,
+gboolean casp_host::mouse_button_press_event(GtkWidget *_widget, GdkEventButton *_event,
                                    gpointer _data) {
-    c_host *_host = (c_host *)_data;
+    casp_host *_host = (casp_host *)_data;
     if (_host->get_mouse_button_retain(_event->button) == false) {
         _host->button_sig = _event->button;
         _host->buttons.insert(_event->button);
@@ -12,16 +12,16 @@ gboolean c_host::mouse_button_press_event(GtkWidget *_widget, GdkEventButton *_e
     return true;
 }
 
-gboolean c_host::mouse_button_release_event(GtkWidget *_widget, GdkEventButton *_event,
+gboolean casp_host::mouse_button_release_event(GtkWidget *_widget, GdkEventButton *_event,
                                      gpointer _data) {
-    c_host *_host = (c_host *)_data;
+    casp_host *_host = (casp_host *)_data;
     _host->buttons.erase(_event->button);
     return true;
 }
 
-gboolean c_host::mouse_scroll_event(GtkWidget *_widget, GdkEventScroll *_event,
+gboolean casp_host::mouse_scroll_event(GtkWidget *_widget, GdkEventScroll *_event,
                              gpointer _data) {
-    c_host *_host = (c_host *)_data;
+    casp_host *_host = (casp_host *)_data;
     switch (_event->direction) {
     case GDK_SCROLL_UP:
         _host->scroll = -1;
@@ -41,19 +41,19 @@ gboolean c_host::mouse_scroll_event(GtkWidget *_widget, GdkEventScroll *_event,
     return true;
 }
 
-bool c_host::get_mouse_button_press(int _value) {
+bool casp_host::get_mouse_button_press(int _value) {
     return button_sig == _value;
 }
 
-bool c_host::get_mouse_button_retain(int _value) {
+bool casp_host::get_mouse_button_retain(int _value) {
     return buttons.find(_value) != buttons.end();
 }
 
 // === debug ===
 
-#ifdef c_permission_debug
+#ifdef casp_permission_debug
 
-void c_host::debug_mouse_button() {
+void casp_host::debug_mouse_button() {
     if  (buttons.size() > 0)
         std::cout << "mouse_button_code : ";
 

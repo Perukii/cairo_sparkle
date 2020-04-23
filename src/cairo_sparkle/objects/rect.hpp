@@ -1,6 +1,6 @@
 
 
-class c_rect : public c_object {
+class casp_rect : public casp_object {
 protected:
     bool rect_enable;
     casp_xywh<double> d_xywh;
@@ -9,10 +9,10 @@ public:
     casp_xywh<double> xywh;
     casp_xy<double> draw_pivot;
     casp_rgb color_rect;
-    c_stroke rect_stroke;
+    casp_stroke rect_stroke;
     
 
-    template<class... Args> c_rect(Args...);
+    template<class... Args> casp_rect(Args...);
 
     void setup_rect(casp_xywh<double>, casp_rgb, casp_xy<double>);
 
@@ -23,9 +23,9 @@ public:
 
 };
 
-template<class... Args> c_rect::c_rect(Args... args){ setup_rect(args...); }
+template<class... Args> casp_rect::casp_rect(Args... args){ setup_rect(args...); }
 
-void c_rect::setup_rect(casp_xywh<double> _xywh = {0.0, 0.0, 0.0, 0.0},
+void casp_rect::setup_rect(casp_xywh<double> _xywh = {0.0, 0.0, 0.0, 0.0},
                         casp_rgb _color_rect = casp_rgb_null,
                         casp_xy<double> _draw_pivot = {0.0, 0.0}){
 
@@ -37,10 +37,10 @@ void c_rect::setup_rect(casp_xywh<double> _xywh = {0.0, 0.0, 0.0, 0.0},
     
 }
 
-void c_rect::enable_rect() { rect_enable = true; }
-void c_rect::disable_rect() { rect_enable = false; }
+void casp_rect::enable_rect() { rect_enable = true; }
+void casp_rect::disable_rect() { rect_enable = false; }
 
-void c_rect::draw_rect(bool transform_xywh = true) {
+void casp_rect::draw_rect(bool transform_xywh = true) {
 
     if(transform_xywh) d_xywh = surface->transform_xywh(xywh);
 

@@ -1,4 +1,4 @@
-
+/*
 class casp_circle : public casp_object, public casp_stroke {
 public:
     casp_xy<double> center, d_center;
@@ -40,3 +40,4 @@ public:
     }
 
 };
+*/

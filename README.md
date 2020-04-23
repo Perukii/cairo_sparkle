@@ -1,8 +1,5 @@
 注 : この描画プラットフォームは、現在絶賛(?)開発中です。
 
-**Windowアプリケーション用バックエンドをGTK3からgtkmm(C++バインディング)に変更しました。**
-
-なおあくまでもC++バインディングへの変更ですから、プログラムについて大きな変更はなく、大半は従来のコードをそのまま使います。
 
 # Cairo Sparkle について
 
@@ -10,7 +7,8 @@
 
 CaSpは、C++で動作する[Cairo](https://www.cairographics.org/)ベースの描画プラットフォームです。
 
-また、Windowアプリケーション用・デバッグ機能のバックエンドとして[GTK3](https://www.gtk.org/)のC++バインディングである[gtkmm](https://www.gtkmm.org/en/)を採用しています。
+また、Windowアプリケーション用・デバッグ機能のバックエンドとして[GTK3](https://www.gtk.org/)
+を採用しています。
 
 ___
 
@@ -40,38 +38,27 @@ ___
 
 Ubuntu19.10 での構築例。
 
-・gtkmmをインストール
+・gtk3をインストール
 
-(Cairoはgtkmmに組み込まれているので別途インストールする必要はありません。)
-
-・SDL_mixerをインストール
+(Cairoはgtk3に組み込まれているので別途インストールする必要はありません。)
 
 ・CaSpのcloneをダウンロード
 
 #### 実行
 
-コンパイルするcppファイルは、cairo_sparkle/include.hpp と cairo_sparkle_gui/include.hpp を
+コンパイルするcppファイルは、src/cairo_sparkle.hppを
 includeする必要があります。
 
 g++、demo/DEMO.cppでの実行例
 (clang++にも対応しています。)
 
 ```
-g++ -o [生成する実行ファイル] [コンパイルするcppファイル] $(pkg-config --cflags --libs gtkmm-3.0) {PATHを通さない場合}(-I [cairo_sparkleのディレクトリ]) -lpng -lSDL2 -lSDL2_mixer -std=c++17
+g++ -o [生成する実行ファイル] [コンパイルするcppファイル] $(pkg-config --cflags --libs gtk+-3.0) {PATHを通さない場合}(-I [cairo_sparkleのディレクトリ]) -lpng -std=c++17
 ```
 
 
 demo/DEMO_blockout.cpp
 ```
-g++ -o DEMO demo/DEMO_blockout.cpp $(pkg-config --cflags --libs gtkmm-3.0) -lpng -lSDL2 -lSDL2_mixer -std=c++17
+g++ -o DEMO demo/DEMO_blockout.cpp $(pkg-config --cflags --libs gtk+-3.0) -lpng -std=c++17
 ```
-
-___
-
-# DEMO
-
-demo/DEMO_blockout.cpp (実際にライブラリの機能で出力したPNG画像です)
-
-![test](https://user-images.githubusercontent.com/57752033/78498979-dae63900-7788-11ea-888f-22a629cf5159.png)
-
 

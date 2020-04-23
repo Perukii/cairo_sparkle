@@ -1,14 +1,14 @@
 
 
-class c_object {
+class casp_object {
 protected:
-    c_surface * surface;
+    casp_surface * surface;
 
 public:
-    void set_surface(c_surface *);
+    void set_surface(casp_surface *);
 
 };
 
-void c_object::set_surface(c_surface * _surface = c_default_surface_target){
+void casp_object::set_surface(casp_surface * _surface = casp_default_surface_target){
     surface = _surface;
 }

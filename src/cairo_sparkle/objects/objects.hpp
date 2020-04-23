@@ -2,11 +2,11 @@
 
 #include "surface.hpp"
 
-c_surface *c_default_surface_target = NULL;
-cairo_filter_t c_def_image_filter = CAIRO_FILTER_GOOD;
+casp_surface *casp_default_surface_target = NULL;
+cairo_filter_t casp_def_image_filter = CAIRO_FILTER_GOOD;
 
-void c_default_surface(c_surface *_surface){
-    c_default_surface_target = _surface;
+void casp_default_surface(casp_surface *_surface){
+    casp_default_surface_target = _surface;
 }
 
 #include "options/stroke.hpp"

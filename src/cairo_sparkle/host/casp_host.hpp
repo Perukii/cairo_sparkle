@@ -1,25 +1,25 @@
 
-#define c_permission_debug
-#define c_permission_key_events
-#define c_permission_mouse_button_events
-#define c_permission_mouse_notify_events
-#define c_output_png
+#define casp_permission_debug
+#define casp_permission_key_events
+#define casp_permission_mouse_button_events
+#define casp_permission_mouse_notify_events
+#define casp_output_png
 
 #include "definition.hpp"
 #include "default_signal.hpp"
 
-#ifdef c_permission_key_events
+#ifdef casp_permission_key_events
     #include "key.hpp"
 #endif
 
-#ifdef c_permission_mouse_button_events
+#ifdef casp_permission_mouse_button_events
     #include "mouse_button.hpp"
 #endif
 
-#ifdef c_permission_mouse_notify_events
+#ifdef casp_permission_mouse_notify_events
     #include "mouse_notify.hpp"
 #endif
 
-#ifdef c_output_png
+#ifdef casp_output_png
     #include "output/png.hpp"
 #endif

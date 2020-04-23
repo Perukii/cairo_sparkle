@@ -1,7 +1,7 @@
 
 #define casp_auto DBL_MAX
-#define c_transform_basis_w 0
-#define c_transform_basis_h 1
+#define casp_transform_basis_w 0
+#define casp_transform_basis_h 1
 
 #define casp_rgb_null casp_rgb(0, 0, 0, 0)
 #define casp_rgb_black casp_rgb(0, 0, 0, 1)

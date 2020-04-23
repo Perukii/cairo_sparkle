@@ -1,6 +1,6 @@
 
 
-void c_host::write_png(const char * _file) {
+void casp_host::write_png(const char * _file) {
 
     if(output_mode == true)return;
     
