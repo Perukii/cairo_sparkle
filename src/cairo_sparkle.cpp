@@ -6,5 +6,6 @@
 
 #include <iostream>
 #include <set>
+#include <vector>
 
 #include "cairo_sparkle/include.hpp"

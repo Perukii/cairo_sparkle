@@ -9,10 +9,14 @@ void c_default_surface(c_surface *_surface){
     c_default_surface_target = _surface;
 }
 
+#include "options/stroke.hpp"
+
 #include "functions.hpp"
 #include "object.hpp"
 #include "rect.hpp"
-//#include "objects/options/stroke.hpp"
+#include "line.hpp"
+
+
 
 /*
 #include "objects/text.hpp"

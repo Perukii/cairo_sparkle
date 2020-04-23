@@ -8,6 +8,7 @@ public:
     casp_xywh<double> xywh;
     casp_xy<double> draw_pivot;
     casp_rgb color_rect;
+    c_stroke rect_stroke;
 
     template<class... Args> c_rect(Args...);
 
@@ -22,10 +23,9 @@ public:
 
 template<class... Args> c_rect::c_rect(Args... args){ setup_rect(args...); }
 
-void c_rect::setup_rect
-    (casp_xywh<double> _xywh = {0.0, 0.0, 0.0, 0.0},
-        casp_rgb _color_rect = casp_rgb_null,
-        casp_xy<double> _draw_pivot = {0.0, 0.0}){
+void c_rect::setup_rect(casp_xywh<double> _xywh = {0.0, 0.0, 0.0, 0.0},
+                        casp_rgb _color_rect = casp_rgb_null,
+                        casp_xy<double> _draw_pivot = {0.0, 0.0}){
 
     enable_rect();
     xywh = _xywh;
@@ -47,10 +47,15 @@ void c_rect::draw_rect() {
                     d_xywh.y - d_xywh.h * (draw_pivot.y + 1.0) * 0.5,
                     d_xywh.w, d_xywh.h);
 
-    if (rect_enable){
-        set_color(color_rect);
-        cairo_fill(surface->cr);
-    }
+    surface->set_color(rect_enable ? color_rect:casp_rgb_null);
+    
+    cairo_fill_preserve(surface->cr);
+    rect_stroke.draw_stroke(surface);
+
+
+    
+
+
     
 }
 

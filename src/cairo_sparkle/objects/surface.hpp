@@ -20,6 +20,8 @@ public:
 
     void set_wh();
 
+    void set_color(casp_rgb);
+
     void draw_background(casp_rgb);
 
     double transform_x(double);
@@ -61,6 +63,10 @@ void c_surface::set_wh() {
     xywh.h = (transform_basis == c_transform_basis_h)
                 ? scale
                 : scale / resolution.x * resolution.y;
+}
+
+void c_surface::set_color(casp_rgb _color){
+    cairo_set_source_rgba(cr, _color.r, _color.g, _color.b, _color.a);
 }
 
 void c_surface::draw_background(casp_rgb _color) {
